@@ -1,29 +1,28 @@
--- Creation de la BDD
-
 CREATE SEQUENCE IdStage;
 CREATE SEQUENCE IdPersonne;
 
-CREATE TABLE Stage (
-       IdStage INTEGER PRIMARY KEY,
-       HeureDebut DATE,
-       HeureFin DATE,
-       Jour DATE
-);
-
+-- rajouter les ON DELETE ..... pour les mises a jour
 CREATE TABLE Sport (
        NomSport VARCHAR2(15) PRIMARY KEY,
-       TarifBase NUMBER(4,2)
-);
-
-CREATE TABLE Terrain (
-       NomTerrain VARCHAR2(15) PRIMARY KEY,
-       HeureOuverture DATE,
-       HeureFermeture DATE,
-       Capacite INTEGER
+       TarifBase NUMBER(4,2) CONSTRAINT ch_tarif_base CHECK(TarifBase > 0)
 );
 
 CREATE TABLE TypeTerrain (
-       Type VARCHAR2(15) PRIMARY KEY
+       TypeTerrain VARCHAR2(15) PRIMARY KEY
+);
+
+CREATE TABLE Commune (
+       IdCommune INTEGER PRIMARY KEY
+);
+CREATE TABLE Terrain (
+       NomTerrain VARCHAR2(15),
+       IdCommune INTEGER FOREIGN KEY REFERENCES Commune(IdCommune),
+       HeureOuverture DATE,
+       HeureFermeture DATE,
+       Capacite INTEGER CONSTRAINT ch_capacite CHECK(Capacite > 0),
+       TypeTerrain VARCHAR2(15) FOREIGN KEY REFERENCES TypeTerrain(TypeTerrain),
+       CONSTRAINT pk PRIMARY KEY (NomTerrain,IdCommune),
+       CONSTRAINT ch_heure CHECK(HeureOuverture < HeureFermeture)
 );
 
 CREATE TABLE Personne (
@@ -31,11 +30,14 @@ CREATE TABLE Personne (
        Nom VARCHAR2(15),
        Prenom VARCHAR2(15),
        Email VARCHAR2(15),
-       Telephone INTEGER
+       Telephone INTEGER,
+       Num INTEGER,
+       Rue VARCHAR2(15),
+       IdCommune INTEGER FOREIGN KEY REFERENCES Commune(IdCommune)
 );
 
 CREATE TABLE Membre (
-       IdMembre INTEGER PRIMARY KEY,
+       IdMembre INTEGER PRIMARY KEY REFERENCES Personne(IdPersonne),
        DateNaissance DATE
 );
 
@@ -46,53 +48,49 @@ CREATE TABLE Inscription (
 );
 
 CREATE TABLE Moniteur (
-       IdMoniteur INTEGER PRIMARY KEY
+       IdMoniteur INTEGER PRIMARY KEY REFERENCES Personne(IdPersonne)
 );
 
-CREATE TABLE Adresse (
-        Num INTEGER PRIMARY KEY,
-	Rue VARCHAR2(15) PRIMARY KEY
-);
-
-CREATE TABLE Commune (
-       IdCommune INTEGER PRIMARY KEY
+CREATE TABLE Stage (
+       IdStage INTEGER PRIMARY KEY,
+       HeureDebut DATE,
+       HeureFin DATE,
+       Jour DATE, -- pas utile car on a le jour dans les heures
+       CONSTRAINT ch_heure CHECK(HeureDebut < HeureFin),
+       NomSport VARCHAR2(15) FOREIGN KEY REFERENCES Sport(NomSport),
+       NomTerrain VARCHAR2(15) FOREIGN KEY REFERENCES Terrain(NomTerrain),
+       IdMoniteur INTEGER FOREIGN KEY REFERENCES Moniteur(IdMoniteur)       
 );
 
 CREATE TABLE Affectation_Encadrement (
-       IdMoniteur INTEGER PRIMARY KEY,
-       IdStage INTEGER PRIMARY KEY
+       IdMoniteur INTEGER FOREIGN KEY REFERENCES Moniteur(IdMoniteur),
+       IdStage INTEGER FOREIGN KEY REFERENCES Stage(IdStage)
 );
 
 CREATE TABLE Affectation_Supervision (
-       IdMoniteur INTEGER PRIMARY KEY,
-       IdStage INTEGER PRIMARY KEY
+       IdMoniteur INTEGER FOREIGN KEY REFERENCES Moniteur(IdMoniteur),
+       IdStage INTEGER FOREIGN KEY REFERENCES Stage(IdStage)
  );
 
 CREATE TABLE Affectation_Expertise (
-       IdMoniteur INTEGER PRIMARY KEY,	
-       NomSport VARCHAR2(15) PRIMARY KEY
+       IdMoniteur INTEGER FOREIGN KEY REFERENCES Moniteur(IdMoniteur),	
+       NomSport VARCHAR2(15) FOREIGN KEY REFERENCES Sport(NomSport)
 );
 
 CREATE TABLE Affectation_Habilitation (
-       IdMoniteur INTEGER PRIMARY KEY,
-       NomSport VARCHAR2(15) PRIMARY KEY
+       IdMoniteur INTEGER FOREIGN KEY REFERENCES Moniteur(IdMoniteur),
+       NomSport VARCHAR2(15) FOREIGN KEY REFERENCES Sport(NomSport)
 );
 
-CREATE TABLE Affectation_Terrain (
-       IdStage INTEGER PRIMARY KEY,
-       NomTerrain VARCHAR2(15) PRIMARY KEY,
-       NomCommune VARCHAR2(15) PRIMARY KEY
+CREATE TABLE Possibilite_Pratiquer (
+       NomSport VARCHAR2(15) FOREIGN KEY REFERENCES Sport(NomSport)
+       TypeTerrain VARCHAR2(15) FOREIGN KEY REFERENCES TypeTerrain(TypeTerrain)
 );
 
-CREATE TABLE Possibilite_Terrain (
-       NomSport VARCHAR2(15) PRIMARY KEY,
-       TypeTerrain VARCHAR2(15) PRIMARY KEY
-);
-
-CREATE TABLE Affectation_Stage (
-       IdMembre INTEGER PRIMARY KEY,
-       IdInscription INTEGER PRIMARY KEY,
+CREATE TABLE Participe (
+       IdMembre INTEGER FOREIGN KEY REFERENCES Membre(IdMembre),
+       IdInscription INTEGER FOREIGN KEY REFERENCES Inscription(IdInscription),
        DateInscription DATE,
        Prix NUMBER(4,2),
-       IdStage INTEGER PRIMARY KEY
+       IdStage INTEGER FOREIGN KEY REFERENCES Stage(IdStage)
 );
