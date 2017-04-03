@@ -1,10 +1,12 @@
+package main;
+
 import java.sql.*;
 
 public class ReqParam {
 
     static final String CONN_URL = "jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1";
-    static final String USER = "scott";
-    static final String PASSWD = "tiger";
+    static final String USER = "garatc";
+    static final String PASSWD = "garatc";
   
 
     public ReqParam() {
@@ -13,7 +15,7 @@ public class ReqParam {
             // Enregistrement du driver Oracle
             System.out.print("Loading Oracle driver... "); 
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            System.out.println("loaded");
+            System.out.println("lm.LesSalles  where NBPoaded");
 
             // Etablissement de la connection
             System.out.print("Connecting to the database... "); 
