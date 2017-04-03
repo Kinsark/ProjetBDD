@@ -1,5 +1,7 @@
 package fr.ensimag.ihm;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
@@ -11,7 +13,7 @@ import javax.swing.JPanel;
 
 public class FenetreStatistiques extends JPanel implements ActionListener {
     
-    private JLabel LabelNbStagiaires = new JLabel("Nombres de stagiaires : ");
+    private JLabel LabelNbStagiaires = new JLabel("Nombre de stagiaires : ");
     private JLabel LabelSqlStagiaires = new JLabel("1");
     private JLabel LabelRecettes = new JLabel("Total des recettes de l'association pour l'année en cours : ");
     private JLabel LabelSqlRecettes = new JLabel("1 €");
@@ -57,6 +59,13 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         if (arg0.getSource() == this.boutonTerrains) {
             JFrame f = new JFrame("Terrains les plus utilisés");
 
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+            int height = screenSize.height * 1/2;
+            int width = screenSize.width * 1/8;
+            f.setPreferredSize(new Dimension(width, height));
+            
+            
             String terrain = new String("Terrain");
             
             String[] data = new String[15];
@@ -72,6 +81,12 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         }
         if (arg0.getSource() == this.boutonInscrits) {
             JFrame f = new JFrame("Nombre moyen d'inscrits par stage");
+            
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+            int height = screenSize.height * 1/2;
+            int width = screenSize.width * 1/8;
+            f.setPreferredSize(new Dimension(width, height));
 
             String stage = new String("Stage");
             
@@ -88,6 +103,13 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         }
         if (arg0.getSource() == this.boutonRatio) {
             JFrame f = new JFrame("Ratio supervision/encadrement des moniteurs");
+            
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+            int height = screenSize.height * 1/2;
+            int width = screenSize.width * 1/8;
+            f.setPreferredSize(new Dimension(width, height));
+            
             String moniteur = new String("Moniteur");
             
             String[] data = new String[15];
