@@ -27,12 +27,12 @@ CREATE TABLE Terrain (
 
 CREATE TABLE Personne (
        IdPersonne INTEGER PRIMARY KEY,
-       Nom VARCHAR2(15),
-       Prenom VARCHAR2(15),
-       Email VARCHAR2(15),
+       Nom VARCHAR2(20),
+       Prenom VARCHAR2(20),
+       Email VARCHAR2(40),
        Telephone VARCHAR2(10),
-       Num INTEGER,
-       Rue VARCHAR2(15),
+       NumRue INTEGER,
+       NomRue VARCHAR2(100),
        IdCommune INTEGER, 
        FOREIGN KEY (IdCommune) REFERENCES Commune(IdCommune)
 );
