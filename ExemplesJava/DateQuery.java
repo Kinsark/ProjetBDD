@@ -1,3 +1,5 @@
+package main;
+
 import java.sql.*;
 import java.util.Calendar;
 
@@ -5,8 +7,8 @@ public class DateQuery {
 
     static final String CONN_URL = "jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1";
 
-    static final String USER = "scott";
-    static final String PASSWD = "tiger";
+    static final String USER = "garatc";
+    static final String PASSWD = "garatc";
 
     static final String PRE_STMT1 =
         "select min(hiredate),max(hiredate) from emp";
@@ -33,7 +35,7 @@ public class DateQuery {
             System.out.println("connected");
 
          /* Recherche de la date d'embauche la plus ancienne et
-          * de la plus récente dans la table EMP
+          * de la plus rï¿½cente dans la table EMP
           */
 
             // Creation de la requete
@@ -66,7 +68,7 @@ public class DateQuery {
             rset.close();
             stmt.close();
 
-         /* Recherche des employés embauchés le 3 décembre 1981
+         /* Recherche des employï¿½s embauchï¿½s le 3 dï¿½cembre 1981
           */
 
             // Creation de la requete
@@ -89,12 +91,12 @@ public class DateQuery {
             rset.close();
             stmt.close();
 
-          /* Recherche des employés embauchés après le 1er janvier 1982
+          /* Recherche des employï¿½s embauchï¿½s aprï¿½s le 1er janvier 1982
            *
-           * Création de la date du 1er janvier 1982.
+           * Crï¿½ation de la date du 1er janvier 1982.
            * On peut directement utiliser new java.sql.Date(82, 0, 1)
-           * cependant Calendar permet de réaliser des calculs sur les
-           * dates si nécessaire.
+           * cependant Calendar permet de rï¿½aliser des calculs sur les
+           * dates si nï¿½cessaire.
            * Attention aux conflits entre java.util.Date et
            * java.sql.Date.
            */
@@ -104,7 +106,7 @@ public class DateQuery {
             Calendar cal = new java.util.GregorianCalendar(1982, 0, 1);
             
             //Creation d'un objet Date (de java.sql.Date) equivalent
-            //à notre objet Calendar (on donne a l'objet Date d le meme
+            //ï¿½ notre objet Calendar (on donne a l'objet Date d le meme
             //nombre de milisecondes depuis "January 1, 1970, 00:00:00 GMT")
             
             //remarque 1 : cal.getTime() revoie un objet Date (java.util)
@@ -112,13 +114,13 @@ public class DateQuery {
             //correspondand au nombre de milisecondes depuis 
             //"January 1, 1970, 00:00:00 GMT"
             
-            //remarque 2 : il est possible de réaliser l'opération
-            //inverse, c'est à dire convertir un objet java.sql.Date
+            //remarque 2 : il est possible de rï¿½aliser l'opï¿½ration
+            //inverse, c'est ï¿½ dire convertir un objet java.sql.Date
             //en java.util.Calendar
             
-            //remarque 3 : pour savoir les opérations disponnibles
+            //remarque 3 : pour savoir les opï¿½rations disponnibles
             //sur les objets Calendar et Date (java.sql), voir les
-            //description de classes et de méthodes correspondantes
+            //description de classes et de mï¿½thodes correspondantes
             //dans l'API java : 
             //http://www.javasoft.com/products/jdk/1.1/docs/api/java.util.Calendar.html
             //http://www.javasoft.com/products/jdk/1.1/docs/api/java.util.GregorianCalendar.html
