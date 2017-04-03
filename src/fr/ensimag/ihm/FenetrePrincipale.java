@@ -56,6 +56,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         this.itemMoniteur.addActionListener(this);
         this.itemAPropos.addActionListener(this);
         this.itemStage.addActionListener(this);
+        this.itemAfficher.addActionListener(this);
 
         this.setVisible(true);
     }
@@ -74,6 +75,9 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         if (arg0.getSource() == this.itemAPropos) {
             JOptionPane jop1 = new JOptionPane();
             jop1.showMessageDialog(null, "Projet bases de données\nCode réalisé par l'équipe 8.", "A propos", JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (arg0.getSource() == this.itemAfficher) {
+            this.setContentPane(new FenetreStatistiques());
         }
         this.setVisible(true);
     }
