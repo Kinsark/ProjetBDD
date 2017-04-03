@@ -30,10 +30,11 @@ CREATE TABLE Personne (
        Nom VARCHAR2(15),
        Prenom VARCHAR2(15),
        Email VARCHAR2(15),
-       Telephone INTEGER,
+       Telephone VARCHAR2(10),
        Num INTEGER,
        Rue VARCHAR2(15),
-       IdCommune INTEGER FOREIGN KEY REFERENCES Commune(IdCommune)
+       IdCommune INTEGER, 
+       FOREIGN KEY (IdCommune) REFERENCES Commune(IdCommune)
 );
 
 CREATE TABLE Membre (
