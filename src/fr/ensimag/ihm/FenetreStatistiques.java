@@ -23,6 +23,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
     private JButton boutonTerrains = new JButton("Terrains les plus utilisés");
     private JButton boutonInscrits = new JButton("Nombre moyen d'inscrits par stage");
     private JButton boutonRatio= new JButton("Ratio supervision/encadrement des moniteurs");
+    private JButton boutonActualiser = new JButton("Actualiser");
     
     public FenetreStatistiques() {
         this.add(bv);
@@ -51,6 +52,8 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         this.bv.add(boutonTerrains);
         this.bv.add(boutonInscrits);
         this.bv.add(boutonRatio);
+        // bouton "Actualiser", qui appelle un fonction qui recalcule les variables importantes
+        this.bv.add(boutonActualiser);
         
     }
     
