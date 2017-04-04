@@ -19,7 +19,6 @@ public class Action {
 	    System.out.print("Connecting to the database... "); 
 	    this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             System.out.println("connected");
-            
             } 
         catch (SQLException e) {
             System.err.println("failed");
@@ -27,12 +26,16 @@ public class Action {
         }
     }
 
+    public Connection getConnection()
+    {
+        return conn;
+    }
     
     public boolean requete(String requete){
         boolean i = false;
         try {
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
+            //DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            //this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             // Creation de la requete
             PreparedStatement stmt = conn.prepareStatement(requete);
             
@@ -50,7 +53,7 @@ public class Action {
             // Fermeture 
             rset.close();
             stmt.close();
-            conn.close();
+            //conn.close();
         } catch (SQLException e) {
             System.err.println("failed");
             e.printStackTrace(System.err);
@@ -60,8 +63,8 @@ public class Action {
     public String requeteId(String requete) {
         String idString = null;
         try {
-	    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
+	    //DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            //this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
 	    // Creation de la requete
             PreparedStatement stmt = conn.prepareStatement(requete);
 	    // Execution de la requete
@@ -76,7 +79,7 @@ public class Action {
 	    // Fermeture 
 	    rset.close();
             stmt.close();
-            conn.close();
+            //conn.close();
 
         } catch (SQLException e) {
             System.err.println("failed");
@@ -105,7 +108,7 @@ public class Action {
 
           // Fermetures
           pstmt.close();
-          conn.close();
+          //conn.close();
         }
         catch (SQLException e) {
           System.err.println("failed !");

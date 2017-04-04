@@ -4,6 +4,9 @@ import fr.ensimag.jdbc.*;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -82,11 +85,24 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         FenetrePrincipale fp = new FenetrePrincipale();
         // A modif
-        Connexion connexion = new Connexion();
-        Action action = new Action(connexion.getConn());
+        
+        Action action = new Action();
         InterfaceRequete intReq = new InterfaceRequete();
+        action.getConnection().close();
+        
+        // on ferme la connexion quand l'user quitte l'application
+        // pb : si l'app crash la connexion ne ferme pas
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                action.getConnection().close();
+                System.out.println("disconnected");
+            } catch (SQLException ex) {
+                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }));
     }
 }
