@@ -1,17 +1,13 @@
 package fr.ensimag.ihm;
 
-import java.awt.Color;
+import fr.ensimag.jdbc.*;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
 
@@ -84,5 +80,9 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         FenetrePrincipale fp = new FenetrePrincipale();
+        // A modif
+        Connexion connexion = new Connexion();
+        Action action = new Action(connexion.getConn());
+        InterfaceRequete intReq = new InterfaceRequete();
     }
 }
