@@ -21,20 +21,20 @@ import javax.swing.text.MaskFormatter;
 
 public class FenetreAjoutStage extends JPanel implements ActionListener {
 
-    private static final DateFormat formatJour = new SimpleDateFormat("dd/MM/yyyy");
-    private static final DateFormat formatHeure = new SimpleDateFormat("HH:mm");
+    private static final DateFormat FORMAT_JOUR = new SimpleDateFormat("dd/MM/yyyy");
+    private static final DateFormat FORMAT_HEURE = new SimpleDateFormat("HH:mm");
 
     private JOptionPane jop = new JOptionPane();
     private Box bv = Box.createVerticalBox();
 
     private JLabel labelHeureDebut = new JLabel("Heure de début (hh:mm)");
-    private JFormattedTextField ftfHeureDebut = new JFormattedTextField(this.formatHeure);
+    private JFormattedTextField ftfHeureDebut = new JFormattedTextField(this.FORMAT_HEURE);
 
     private JLabel labelHeureFin = new JLabel("Heure de fin (hh:mm)");
-    private JFormattedTextField ftfHeureFin = new JFormattedTextField(this.formatHeure);
+    private JFormattedTextField ftfHeureFin = new JFormattedTextField(this.FORMAT_HEURE);
 
     private JLabel labelJour = new JLabel("Jour (jj/mm/aaaa)");
-    private JFormattedTextField ftfJour = new JFormattedTextField(this.formatJour);
+    private JFormattedTextField ftfJour = new JFormattedTextField(this.FORMAT_JOUR);
 
     private JLabel labelTerrain = new JLabel("Terrain");
     private JComboBox comboTerrain;
@@ -154,6 +154,8 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         String[] heureDebut = this.ftfHeureDebut.getText().split(":");
         String[] heureFin = this.ftfHeureFin.getText().split(":");
         int heureDebutH = 0, heureDebutM = 0, heureFinH = 0, heureFinM = 0;
+        String[] date = this.ftfJour.getText().split("/");
+        int jour = 0, mois = 0, annee = 0;
         try {
             heureDebutH = Integer.parseInt(heureDebut[0]);
             heureDebutM = Integer.parseInt(heureDebut[1]);
@@ -170,6 +172,14 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         }
         if ((heureDebutH > heureFinH) || (heureDebutH == heureFinH) && (heureDebutM > heureFinM)) {
             jop.showMessageDialog(null, "L'heure de début et l'heure de fin sont incompatibles !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        try {
+            jour = Integer.parseInt(date[0]);
+            mois = Integer.parseInt(date[1]);
+            annee = Integer.parseInt(date[2]);
+        } catch (NumberFormatException e) {
+            jop.showMessageDialog(null, "Le jour est mal saisi !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         // TODO : faire le test avec les horaires du stade
