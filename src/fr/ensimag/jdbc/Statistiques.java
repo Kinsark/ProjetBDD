@@ -40,8 +40,8 @@ public class Statistiques {
     public String recettes() {
         return "SELECT SUM(PRIX)"
                 + "FROM INSCRIPTION"
-                + "WHERE DATE <= CONVERT(DATE, 31/12/2017, 103)"
-                + "AND DATE >= CONVERT(DATE, 31/12/2017, 103)";
+                + "WHERE DATE <= '20171231'"
+                + "AND DATE >= '20170101'";
     }
     
     
