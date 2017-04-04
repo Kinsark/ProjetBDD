@@ -7,7 +7,8 @@ public class Requete {
     static final String USER = "garatc";
     static final String PASSWD = "garatc";
 
-    public Requete(String requete) {
+    public boolean ExecuteRequete(String requete) {
+        boolean i = false;
         try {
 	    // Enregistrement du driver Oracle
 	    System.out.print("Loading Oracle driver... "); 
@@ -18,11 +19,13 @@ public class Requete {
 	    System.out.print("Connecting to the database... "); 
 	    Connection conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             System.out.println("connected");
-
+            
 	    // Creation de la requete
             PreparedStatement stmt = conn.prepareStatement(requete);
 	    // Execution de la requete
             ResultSet rset = stmt.executeQuery();
+            if (rset.next()){
+                i = true;}
 	    // Affichage du resultat
             System.out.println("Results:");
             dumpResultSet(rset);
@@ -37,7 +40,8 @@ public class Requete {
             System.err.println("failed");
             e.printStackTrace(System.err);
         }
-    }
+    
+    return i ;}
 
     private void dumpResultSet(ResultSet rset) throws SQLException {
         ResultSetMetaData rsetmd = rset.getMetaData();
