@@ -22,19 +22,15 @@ public class FenetreAjoutMembre extends FenetreAjoutPersonne {
 
     public FenetreAjoutMembre() {
         super();
-        Box bv = super.getBoxVerticale();
         // date de naissance
-        Box boxDateNaissance = Box.createHorizontalBox();
-        boxDateNaissance.add(this.labelDateNaissance);
-        boxDateNaissance.add(this.ftfDateNaissance);
+        super.addLabelAndComponent(labelDateNaissance, ftfDateNaissance);
         try {
             MaskFormatter dateMask = new MaskFormatter("##/##/####");
             dateMask.install(ftfDateNaissance);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        bv.add(boxDateNaissance);
-        bv.add(this.boutonValider);
+        this.addLabelAndComponent(new JLabel("Valider"), this.boutonValider);
         this.boutonValider.addActionListener(this);
     }
 
@@ -43,7 +39,7 @@ public class FenetreAjoutMembre extends FenetreAjoutPersonne {
         if (arg0.getSource() == this.boutonValider) {
             if (this.verifierFormulaire()) {
                 // TODO : mettre dans la BDD
-                super.getJOP().showMessageDialog(null, "OK", "Membre ajouté !", JOptionPane.INFORMATION_MESSAGE);
+                super.getJOP().showMessageDialog(null, "Membre ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

@@ -12,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SpringLayout;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
 
@@ -30,7 +31,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     public FenetrePrincipale() {
         // parametres globaux
         this.setTitle("A bout de souffle !");
-        this.setSize(900, 400);
+        this.setSize(500, 400);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -65,12 +66,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.itemMembre) {
             this.setContentPane(new FenetreAjoutMembre());
+			this.pack();
         }
         if (arg0.getSource() == this.itemMoniteur) {
             this.setContentPane(new FenetreAjoutMoniteur());
+			this.pack();
         }
         if (arg0.getSource() == this.itemStage) {
             this.setContentPane(new FenetreAjoutStage());
+			this.pack();
         }
         if (arg0.getSource() == this.itemAPropos) {
             JOptionPane jop1 = new JOptionPane();
@@ -78,6 +82,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         }
         if (arg0.getSource() == this.itemAfficher) {
             this.setContentPane(new FenetreStatistiques());
+			this.pack();
         }
         this.setVisible(true);
     }
