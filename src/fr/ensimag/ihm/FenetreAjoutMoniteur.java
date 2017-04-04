@@ -3,6 +3,7 @@ package fr.ensimag.ihm;
 import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class FenetreAjoutMoniteur extends FenetreAjoutPersonne {
@@ -11,8 +12,7 @@ public class FenetreAjoutMoniteur extends FenetreAjoutPersonne {
     
     public FenetreAjoutMoniteur() {
         super();
-        Box bv = super.getBoxVerticale();
-        bv.add(this.boutonValider);
+		super.addLabelAndComponent(new JLabel("Valider"), this.boutonValider);
         this.boutonValider.addActionListener(this);
     }
     
@@ -21,7 +21,7 @@ public class FenetreAjoutMoniteur extends FenetreAjoutPersonne {
         if (arg0.getSource() == this.boutonValider) {
             if (super.verifierFormulaire()) {
                 // TODO : mettre dans la BDD
-                super.getJOP().showMessageDialog(null, "OK", "Moniteur ajouté !", JOptionPane.INFORMATION_MESSAGE);
+                super.getJOP().showMessageDialog(null, "Moniteur ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
