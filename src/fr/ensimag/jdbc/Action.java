@@ -1,23 +1,45 @@
 package fr.ensimag.jdbc;
 
+import static fr.ensimag.jdbc.Requete.CONN_URL;
 import java.sql.*;
 
 public class Action {
-    private Connection conn;
+    static Connection conn;
+    static final String CONN_URL = "jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1";
+    static final String USER = "garatc";
+    static final String PASSWD = "garatc";
     
-    public Action(Connection conn) {
-        this.conn = conn;
+    public Action() {
+        try{
+            System.out.print("Loading Oracle driver... "); 
+	    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            System.out.println("loaded");
+
+	    // Etablissement de la connexion
+	    System.out.print("Connecting to the database... "); 
+	    this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
+            System.out.println("connected");
+            
+            } 
+        catch (SQLException e) {
+            System.err.println("failed");
+            e.printStackTrace(System.err);
+        }
     }
 
     
-    public void requete(String requete){
+    public boolean requete(String requete){
+        boolean i = false;
         try {
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             // Creation de la requete
             PreparedStatement stmt = conn.prepareStatement(requete);
+            
             // Execution de la requete
             ResultSet rset = stmt.executeQuery();
             if (rset.next()){
-                boolean i;
+                
                 i = true;
             }
             // Affichage du resultat
@@ -33,10 +55,40 @@ public class Action {
             System.err.println("failed");
             e.printStackTrace(System.err);
         }
-    }
+    return i;}
+    
+    public String requeteId(String requete) {
+        String idString = null;
+        try {
+	    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
+	    // Creation de la requete
+            PreparedStatement stmt = conn.prepareStatement(requete);
+	    // Execution de la requete
+            ResultSet rset = stmt.executeQuery();
+            if(rset.next()){
+            idString = rset.getString(1);}
+	    // Affichage du resultat
+            System.out.println("Results:");
+            dumpResultRequete(rset);
+            System.out.println("");
+
+	    // Fermeture 
+	    rset.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.err.println("failed");
+            e.printStackTrace(System.err);
+        }
+    
+    return idString ;}
     
     public void transaction(String requete){
         try {
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             // Demarrage de la transaction (implicite dans notre cas)
           conn.setAutoCommit(false);
           conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);

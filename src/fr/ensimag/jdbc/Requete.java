@@ -25,12 +25,8 @@ public class Requete{
 	    // Execution de la requete
             ResultSet rset = stmt.executeQuery();
             if (rset.next()){
-                
                     i = true;
-                 
-             
-                System.out.println("YOOOOOOO");
-                }
+            }
 	    // Affichage du resultat
             System.out.println("Results:");
             dumpResultSet(rset);
