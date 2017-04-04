@@ -91,7 +91,6 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         
         Action action = new Action();
         InterfaceRequete intReq = new InterfaceRequete();
-        action.getConnection().close();
         
         // on ferme la connexion quand l'user quitte l'application
         // pb : si l'app crash la connexion ne ferme pas
