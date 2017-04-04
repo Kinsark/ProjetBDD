@@ -5,7 +5,7 @@ public class InterfaceRequete {
     
     
     public static String ajoutMoniteur(int idMoniteur){
-        return "INSERT INTO MONITEUR(IdMoniteur) VALUES('" + idMoniteur + ")";
+        return "INSERT INTO MONITEUR(IdMoniteur) VALUES('" + idMoniteur + "')";
     }
     
     public static String ajoutPersonne(int id,String nom, String prenom, String email
@@ -24,20 +24,34 @@ public class InterfaceRequete {
         return "SELECT IDCOMMUNE FROM COMMUNE WHERE IDCOMMUNE = '" + commune + " '";
     }
     
+    public static String testPersonne(String nom, String prenom, String email, String telephone){
+        return " Select nom, prenom from Personne Where nom = '" + nom + " ' and prenom = '" + prenom + "'";//+ "' and email ='" + email + "' and telephone = '" + telephone + "'";
+    }
+    
     /* Ajout moniteur */
+    /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){
         InterfaceRequete ir = new InterfaceRequete();
         Transaction Prem = new Transaction();
         Requete req = new Requete();
-        boolean com = req.ExecuteRequete(ir.testCommune(78160));
-        if (com == false){
-            System.out.println("Nous n'avons pas la commune");
-            Prem.ExecuteTransaction(ir.testCommune(78160));
-            }
+        if (req.ExecuteRequete(ir.testPersonne("Dupont","Josephine","michel","03254315")) == false){
+             System.out.println("Ajout de personnes");
+              if (req.ExecuteRequete(ir.testCommune(78160)) == false){
+                    System.out.println("Nous n'avons pas la commune");
+                    Prem.ExecuteTransaction(ir.ajoutCommune(78160));
+                   // Transaction Prem = new Transaction(ir.ajoutMoniteur(ir.compteur,"Jean", "Eude", "michel", "03254315", "18", "rue des jambons"));
+              }
         
-        else  {
-            System.out.println("Nous avons deja la commune");}
-        //Transaction Prem = new Transaction(ir.ajoutMoniteur(ir.compteur,"Jean", "Eude", "michel", "03254315", "18", "rue des jambons"));
+              else  {
+                    System.out.println("Nous avons deja la commune");}
+        
+                    
+               Prem.ExecuteTransaction(ajoutPersonne(1070,"Dupont","Josephine","michel","03254315","3","rue des coquelicots"));
+               Prem.ExecuteTransaction(ajoutMoniteur(1070));
         }
+        else {
+            System.out.println("Personne deja dns la base mais Moniteur?");
+        }
+       }
 }
 
