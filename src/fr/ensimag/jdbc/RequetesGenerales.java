@@ -30,15 +30,16 @@ public class RequetesGenerales {
                     
                     act.transaction(ir.ajoutPersonne(nom,prenom,email,telephone,numero,rue,codePostal));
                     idS = act.requeteId(ir.testPersonne(nom,prenom,email,telephone));
-                    act.transaction(ir.ajoutMoniteur(idS));
+                    act.transaction(ir.ajoutMoniteur(nom,prenom,email,telephone,numero,rue,codePostal,idS));
         }
                  else {
                     if (act.requete(ir.testMoniteur(idS)) == false){
-                        act.transaction(ir.ajoutMoniteur(idS));
+                        act.transaction(ir.ajoutMoniteur(nom,prenom,email,telephone,numero,rue,codePostal,idS));
                     }
             
-            
-        }
+                }
+                // à decommenter si vous voulez verifier l'etat de la table
+                //act.requete(ir.printMoniteur());
        }
 
     public void AjoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal, String dateN){

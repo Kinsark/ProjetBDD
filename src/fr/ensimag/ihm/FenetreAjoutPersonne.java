@@ -35,22 +35,22 @@ public abstract class FenetreAjoutPersonne extends JPanel implements ActionListe
     private JOptionPane jop = new JOptionPane();
 	private int yPos = 0;
     
-    private JLabel labelNom = new JLabel("Nom");
-    private JTextField tfNom = new JTextField(20);
-    private JLabel labelPrenom = new JLabel("Prenom");
-    private JTextField tfPrenom = new JTextField(20);
-    private JLabel labelEmail = new JLabel("Email");
-    private JTextField tfEmail = new JTextField(20);
-    private JLabel labelTelephone = new JLabel("Téléphone");
-    private JTextField tfTelephone = new JTextField(10);
-	private JLabel labelNumeroVoie = new JLabel("Numéro dans la voie");
-    private JTextField tfNumeroVoie = new JTextField(10);
-	private JLabel labelNomVoie = new JLabel("Nom de la voie");
-    private JTextField tfNomVoie = new JTextField(10);
-	private JLabel labelCommune = new JLabel("Code postal");
-    private JTextField tfCommune = new JTextField(10);
+    protected JLabel labelNom = new JLabel("Nom");
+    protected JTextField tfNom = new JTextField(20);
+    protected JLabel labelPrenom = new JLabel("Prenom");
+    protected JTextField tfPrenom = new JTextField(20);
+    protected JLabel labelEmail = new JLabel("Email");
+    protected JTextField tfEmail = new JTextField(20);
+    protected JLabel labelTelephone = new JLabel("Téléphone");
+    protected JTextField tfTelephone = new JTextField(10);
+	protected JLabel labelNumeroVoie = new JLabel("Numéro dans la voie");
+    protected JTextField tfNumeroVoie = new JTextField(10);
+	protected JLabel labelNomVoie = new JLabel("Nom de la voie");
+    protected JTextField tfNomVoie = new JTextField(10);
+	protected JLabel labelCommune = new JLabel("Code postal");
+    protected JTextField tfCommune = new JTextField(10);
     
-    private Connection conn;
+    protected Connection conn;
     
     public FenetreAjoutPersonne(Connection conn) {
 		Border border = this.getBorder();

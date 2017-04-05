@@ -6,8 +6,9 @@ public class InterfaceRequete {
     private int idCompt=0;
     
     
-    public static String ajoutMoniteur(String idMoniteur){
-        return "INSERT INTO MONITEUR(IdMoniteur) VALUES('" + idMoniteur + "')";
+    public static String ajoutMoniteur(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMoniteur){
+        return "INSERT INTO MONITEUR VALUES('" + nom + "', '" + prenom + "', '" + email
+                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMoniteur + ")";
     }
     
     public static String ajoutMembre(String idMembre, String dateN){
@@ -18,16 +19,21 @@ public class InterfaceRequete {
             , String telephone, String num, String rue, String codePostal){
         return "INSERT INTO Personne(IDPERSONNE,NOM, PRENOM, EMAIL, TELEPHONE"
                 + ", NUM, RUE, IDCOMMUNE) "
-                + "VALUES('" + "'IDPersonne.nextval'" + "', '" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', '" + num + "', '" + rue + "'," + codePostal + "')";
+                + "VALUES(" +"IDPersonne.nextval" + ", '" + nom + "', '" + prenom + "', '" + email
+                + "', '" + telephone + "', " + num + ", '" + rue + "'," + codePostal + ")";
     }
     
     public static String ajoutCommune(String commune){
-        return "INSERT INTO Commune(IDcommune) VALUES('" + commune + "'"; 
+        return "INSERT INTO Commune(IDcommune) VALUES('" + commune + "')"; 
     } 
     
     public static String testCommune(String commune){
         return "SELECT IDCOMMUNE FROM COMMUNE WHERE IDCOMMUNE = '" + commune + " '";
+    }
+    
+    public static String printMoniteur()
+    {
+        return "SELECT NOM,PRENOM FROM MONITEUR";
     }
     
     public static String testPersonne(String nom, String prenom, String email, String telephone){
@@ -35,7 +41,7 @@ public class InterfaceRequete {
     }
     
     public static String testMoniteur(String id){
-        return "SELECT idMoniteur from Moniteur where idMoniteur = '" + id + "'" ;
+       return "SELECT idMoniteur from Moniteur where idMoniteur = " + id ;
     }
     
     public static String testStage(String hD, String hF, String jour, String terrain){
