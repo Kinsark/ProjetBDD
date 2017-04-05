@@ -50,7 +50,7 @@ public class InterfaceRequete {
                 + jour + ","
                 + hD + "':', 'dd/mm/yyyy:hh:mi') AND HEUREFIN > TO_DATE('"
                 + jour + ","
-                + hF + "':', 'dd/mm/yyyy:hh:mi');
+                + hF + "':', 'dd/mm/yyyy:hh:mi')";
     }
     
     public static String testMembre(String id){

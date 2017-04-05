@@ -64,7 +64,7 @@ public class RequetesGenerales {
     
      public void AjoutStage(String heureDebut, String heureFin, String jour, String sport, String terrain){
             if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour)) == false){
-                if 
+                
             }
      }
 
