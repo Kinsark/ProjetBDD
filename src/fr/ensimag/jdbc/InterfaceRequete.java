@@ -14,12 +14,12 @@ public class InterfaceRequete {
         return "INSERT INTO Membre(IdMembre, dateNaissance) VALUES('" + idMembre + "','" + dateN + "')";
     }
     
-    public static String ajoutPersonne(String id,String nom, String prenom, String email
-            , String telephone, String num, String rue){
+    public static String ajoutPersonne(String nom, String prenom, String email
+            , String telephone, String num, String rue, String codePostal){
         return "INSERT INTO Personne(IDPERSONNE,NOM, PRENOM, EMAIL, TELEPHONE"
                 + ", NUM, RUE, IDCOMMUNE) "
-                + "VALUES('" + id + "', '" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', '" + num + "', '" + rue + "', '78160')";
+                + "VALUES('" + "'IDPersonne.nextval'" + "', '" + nom + "', '" + prenom + "', '" + email
+                + "', '" + telephone + "', '" + num + "', '" + rue + "'," + codePostal + "')";
     }
     
     public static String ajoutCommune(String commune){
@@ -36,6 +36,21 @@ public class InterfaceRequete {
     
     public static String testMoniteur(String id){
         return "SELECT idMoniteur from Moniteur where idMoniteur = '" + id + "'" ;
+    }
+    
+    public static String testStage(String hD, String hF, String jour, String terrain){
+        return "Select idStage from Stage where HeureDebut = '" + hD 
+                + "' and heureFin = '" + hF 
+                + "' and Jour = '" + jour 
+                + "' and NomTerrain = '" + terrain + "'";
+    }
+    
+    public static String testOccupationTerrain(String jour, String hD, String hF){
+        return "Select idStage from Stage where (HEUREDEBUT <= TO_DATE('"
+                + jour + ","
+                + hD + "':', 'dd/mm/yyyy:hh:mi') AND HEUREFIN > TO_DATE('"
+                + jour + ","
+                + hF + "':', 'dd/mm/yyyy:hh:mi');
     }
     
     public static String testMembre(String id){
