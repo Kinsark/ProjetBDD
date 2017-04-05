@@ -1,5 +1,7 @@
 package fr.ensimag.jdbc;
 
+import java.sql.Connection;
+
 public class InterfaceRequete {
     private int idCompt=0;
     
@@ -42,11 +44,11 @@ public class InterfaceRequete {
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){
-        Action act = new Action();
-        InterfaceRequete ir = new InterfaceRequete();
+        //Action act = new Action();
+        //InterfaceRequete ir = new InterfaceRequete();
        // act.transaction(ajoutPersonne("111","A","B","C","D","3","rue des coquelicots"));
        // act.transaction(ajoutMembre("111","3 juin 1995"));
-        act.requete(testMembre("111"));
+        //act.requete(testMembre("111"));
        }
 }
 

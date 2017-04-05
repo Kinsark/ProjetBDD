@@ -5,6 +5,8 @@
  */
 package fr.ensimag.jdbc;
 
+import java.sql.Connection;
+
 /**
  *
  * @author simsim
@@ -12,10 +14,11 @@ package fr.ensimag.jdbc;
 public class RequetesGenerales {
         private InterfaceRequete ir;
         private Action act;
+        private Connection conn;
         
-        public RequetesGenerales(){
+        public RequetesGenerales(Connection conn){
             this.ir = new InterfaceRequete();
-            this.act = new Action();
+            this.act = new Action(conn);
         }
     public void AjoutMoniteur(String id,String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal){
         String idS = act.requeteId(ir.testPersonne(nom,prenom,email,telephone));

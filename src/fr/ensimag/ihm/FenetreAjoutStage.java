@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
 public class FenetreAjoutStage extends JPanel implements ActionListener {
+    
+        private Connection conn;
 
 	private static final DateFormat FORMAT_JOUR = new SimpleDateFormat("dd/MM/yyyy");
 	private static final DateFormat FORMAT_HEURE = new SimpleDateFormat("HH:mm");
@@ -63,10 +66,12 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 	private JButton boutonSuperviseur = new JButton("Sélectionner le superviseur");
 	private JButton boutonValider = new JButton("Valider");
 
-	public FenetreAjoutStage() {
+	public FenetreAjoutStage(Connection conn) {
 		Border border = this.getBorder();
 		Border margin = new EmptyBorder(10, 10, 10, 10);
 		this.setBorder(new CompoundBorder(border, margin));
+                
+                this.conn = conn;
 
 		GridBagLayout panelGridBagLayout = new GridBagLayout();
 		panelGridBagLayout.columnWidths = new int[]{86, 86, 0};

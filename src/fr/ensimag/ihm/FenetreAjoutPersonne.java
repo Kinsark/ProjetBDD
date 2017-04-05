@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
@@ -49,11 +50,13 @@ public abstract class FenetreAjoutPersonne extends JPanel implements ActionListe
 	private JLabel labelCommune = new JLabel("Code postal");
     private JTextField tfCommune = new JTextField(10);
     
+    private Connection conn;
     
-    public FenetreAjoutPersonne() {
+    public FenetreAjoutPersonne(Connection conn) {
 		Border border = this.getBorder();
 		Border margin = new EmptyBorder(10, 10, 10, 10);
 		this.setBorder(new CompoundBorder(border, margin));
+                this.conn = conn;
 
 		GridBagLayout panelGridBagLayout = new GridBagLayout();
 		panelGridBagLayout.columnWidths = new int[]{86, 86, 0};

@@ -5,25 +5,9 @@ import java.sql.*;
 
 public class Action {
     static Connection conn;
-    static final String CONN_URL = "jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1";
-    static final String USER = "garatc";
-    static final String PASSWD = "garatc";
-    
-    public Action() {
-        try{
-            System.out.print("Loading Oracle driver... "); 
-	    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            System.out.println("loaded");
 
-	    // Etablissement de la connexion
-	    System.out.print("Connecting to the database... "); 
-	    this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
-            System.out.println("connected");
-            } 
-        catch (SQLException e) {
-            System.err.println("failed");
-            e.printStackTrace(System.err);
-        }
+    public Action(Connection conn) {
+        this.conn = conn;
     }
 
     public Connection getConnection()
@@ -90,8 +74,6 @@ public class Action {
     
     public void transaction(String requete){
         try {
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            this.conn = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             // Demarrage de la transaction (implicite dans notre cas)
           conn.setAutoCommit(false);
           conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);

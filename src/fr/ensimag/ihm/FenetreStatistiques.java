@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,9 +26,12 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
     private JButton boutonRatio= new JButton("Ratio supervision/encadrement des moniteurs");
     private JButton boutonActualiser = new JButton("Actualiser");
     
-    public FenetreStatistiques() {
+    private Connection conn;
+    
+    public FenetreStatistiques(Connection conn) {
         this.add(bv);
         
+        this.conn = conn;
         // nombre de stagiaires
         /*
             Requête SQL pour attraper le nombre de stagiaires

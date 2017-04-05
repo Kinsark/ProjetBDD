@@ -1,27 +1,26 @@
 package fr.ensimag.ihm;
 
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 public class FenetreAjoutMembre extends FenetreAjoutPersonne {
-
+    
     private static final DateFormat FORMAT_JOUR = new SimpleDateFormat("dd/MM/yyyy");
 
     private JLabel labelDateNaissance = new JLabel("Date de naissance");
     private JFormattedTextField ftfDateNaissance = new JFormattedTextField(this.FORMAT_JOUR);
     private JButton boutonValider = new JButton("Valider");
 
-    public FenetreAjoutMembre() {
-        super();
+    public FenetreAjoutMembre(Connection conn) {
+        super(conn);
         // date de naissance
         super.addLabelAndComponent(labelDateNaissance, ftfDateNaissance);
         try {

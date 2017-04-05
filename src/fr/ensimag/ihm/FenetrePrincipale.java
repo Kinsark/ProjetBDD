@@ -4,6 +4,7 @@ import fr.ensimag.jdbc.*;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,14 +26,22 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     private JMenuItem itemMoniteur = new JMenuItem("Moniteur");
     private JMenuItem itemAfficher = new JMenuItem("Afficher");
     private JMenuItem itemAPropos = new JMenuItem("A propos...");
+    
+    private Connection conn;
+    
+    public Connection getConn()
+    {
+        return conn;
+    }
 
-    public FenetrePrincipale() {
+    public FenetrePrincipale(Connection conn) {
         // parametres globaux
         this.setTitle("A bout de souffle !");
         this.setSize(500, 400);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
+        this.conn = conn;
         // gestion du menu
         this.menuAjout.add(this.itemStage);
         this.menuAjout.addSeparator();
@@ -63,15 +72,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     // gestion des evenements lies aux boutons du menu
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.itemMembre) {
-            this.setContentPane(new FenetreAjoutMembre());
+            this.setContentPane(new FenetreAjoutMembre(conn));
 			this.pack();
         }
         if (arg0.getSource() == this.itemMoniteur) {
-            this.setContentPane(new FenetreAjoutMoniteur());
+            this.setContentPane(new FenetreAjoutMoniteur(conn));
 			this.pack();
         }
         if (arg0.getSource() == this.itemStage) {
-            this.setContentPane(new FenetreAjoutStage());
+            this.setContentPane(new FenetreAjoutStage(conn));
 			this.pack();
         }
         if (arg0.getSource() == this.itemAPropos) {
@@ -79,24 +88,26 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
             jop1.showMessageDialog(null, "Projet bases de données\nCode réalisé par l'équipe 8.", "A propos", JOptionPane.INFORMATION_MESSAGE);
         }
         if (arg0.getSource() == this.itemAfficher) {
-            this.setContentPane(new FenetreStatistiques());
+            this.setContentPane(new FenetreStatistiques(conn));
 			this.pack();
         }
         this.setVisible(true);
     }
 
     public static void main(String[] args) throws SQLException {
-        FenetrePrincipale fp = new FenetrePrincipale();
+        Connexion connec = new Connexion();
+        
+        FenetrePrincipale fp = new FenetrePrincipale(connec.getConn());
         // A modif
         
-        Action action = new Action();
+        Action action = new Action(fp.getConn());
         InterfaceRequete intReq = new InterfaceRequete();
         
         // on ferme la connexion quand l'user quitte l'application
         // pb : si l'app crash la connexion ne ferme pas
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                action.getConnection().close();
+                fp.getConn().close();
                 System.out.println("disconnected");
             } catch (SQLException ex) {
                 Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
