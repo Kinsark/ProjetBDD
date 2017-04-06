@@ -80,9 +80,10 @@ public class InterfaceRequete {
     }
     
     public String countTerrains() {
-        return "SELECT NOMTERRAIN, COUNT(*)"
+        return "SELECT NOMTERRAIN, COUNT(*) AS THECOUNT "
                 + "FROM STAGE "
-                + "GROUP BY NOMTERRAIN";
+                + "GROUP BY NOMTERRAIN "
+                + "ORDER BY THECOUNT DESC";
     }
     
     public String printTerrains()
