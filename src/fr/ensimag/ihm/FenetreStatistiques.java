@@ -107,11 +107,20 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             int width = screenSize.width * 1/8;
             f.setPreferredSize(new Dimension(width, height));
 
-            String stage = new String("Stage");
+            RequetesGenerales reqG = new RequetesGenerales(conn);
+            ArrayList<String> set = reqG.CountInscritsStage();
             
-            String[] data = new String[15];
-            for (int i = 0; i < 10 ; i++){
-                data[i] = stage + i + " : nbInscrit";
+            String[] data;
+            if (set != null) {
+                data = new String[set.size()/2];
+                for (int i = 0; i < set.size()-1 ; i+=2){
+                data[i] =  set.get(i) + " : " + set.get(i+1);
+                 }
+            }
+            else
+            {
+                data = new String[2];
+                data[0] = "Stage 1";
             }
             
             f.add(new JList(data));

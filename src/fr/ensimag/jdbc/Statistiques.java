@@ -17,7 +17,7 @@ public class Statistiques {
     public String countInscritsStage() {
         return "SELECT IDSTAGE, COUNT(*)"
                 + "FROM PARTICIPE"
-                + "GROUPE BY IDSTAGE";
+                + "GROUP BY IDSTAGE";
     }
 
     // Renvoie les moniteurs et le nombre de supervisions par moniteur

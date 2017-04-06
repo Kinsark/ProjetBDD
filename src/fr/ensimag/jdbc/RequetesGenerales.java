@@ -88,4 +88,11 @@ public class RequetesGenerales {
          return act.requeteSet(ir.countTerrains(),2);
      }
      
+     public ArrayList<String> CountInscritsStage()
+     {
+         act.requete(ir.printStages());
+         return act.requeteSet(ir.countInscritsStage(),2);
+     }
+     
+     
 }

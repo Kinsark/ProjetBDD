@@ -85,6 +85,17 @@ public class InterfaceRequete {
         return "SELECT NOMTERRAIN FROM TERRAIN";
     }
     
+    public String printStages()
+    {
+        return "SELECT IDSTAGE FROM STAGE";
+    }
+    
+    public String countInscritsStage() {
+        return "SELECT IDSTAGE, COUNT(*) "
+                + "FROM PARTICIPE"
+                + " GROUP BY IDSTAGE";
+    }
+    
     
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
