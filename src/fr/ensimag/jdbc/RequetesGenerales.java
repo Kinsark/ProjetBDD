@@ -7,6 +7,7 @@ package fr.ensimag.jdbc;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -88,12 +89,40 @@ public class RequetesGenerales {
          return act.requeteSet(ir.countTerrains(),2);
      }
      
-     public ArrayList<String> CountInscritsStage()
+     public Map<String,String> CountSupervision()
      {
-         act.requete(ir.printStages());
-         return act.requeteSet(ir.countInscritsStage(),2);
+         return act.requeteMap(ir.countSupervision());
+     }
+     
+     public Map<String,String> CountEncadrement()
+     {
+         return act.requeteMap(ir.countEncadrement());
+     }
+     
+     public String recettes()
+     {
+         return act.requeteId(ir.recettes());
      }
 
+     public ArrayList<String> getMoniteur(String id)
+     {
+         return act.requeteSet(ir.testMoniteur(id),2);
+     }
+     
+     public String NbStagiaires()
+     {
+         return act.requeteId(ir.nbStagiaires());
+     }
+     
+     public String NbStages()
+     {
+         return act.requeteId(ir.nbStages());
+     }
+     
+     public String NbInscriptions()
+     {
+         return act.requeteId(ir.nbInscriptions());
+     }
      
      
 }

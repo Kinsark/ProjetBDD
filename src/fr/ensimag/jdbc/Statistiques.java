@@ -2,9 +2,9 @@ package fr.ensimag.jdbc;
 
 public class Statistiques {
     // Nombre de stagiaires
-    public String InscStage() {
+    /*public String InscStage() {
         return "(SELECT COUNT(*) FROM Inscription)/(SELECT COUNT(*) FROM Stage)";
-    }
+    }*/
     
     // Renvoie les terrains et leur nombre d'utilisations
     public String countTerrains() {
@@ -34,6 +34,14 @@ public class Statistiques {
         return "SELECT IDMONITEUR, COUNT(*)"
                 + "FROM AFFECTATION_ENCADREMENT"
                 + "GROUP BY IDMONITEUR";
+    }
+    
+    // solution 2 : not sure
+    public String statsMoniteurs() {
+        return "SELECT A_E.IDMONITEUR, COUNT(A_E.IDMONITEUR), COUNT(A_S.IDMONITEUR)"
+                + " FROM AFFECTATION_ENCADREMENT A_E, AFFECTATION_SUPERVISION A_S" 
+                + " WHERE A_E.IDMEMBRE = A_S.IDMONITEUR"
+                + " GROUP BY IDMONITEUR";
     }
     
     // Renvoie les recettes de l'asso pour l'année en cours

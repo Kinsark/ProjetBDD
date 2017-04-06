@@ -47,7 +47,7 @@ public class InterfaceRequete {
     }
     
     public static String testMoniteur(String id){
-       return "SELECT idMoniteur from Moniteur where idMoniteur = " + id ;
+       return "SELECT NOM, PRENOM from Moniteur where idMoniteur = " + id ;
     }
     
     public static String testStage(String hD, String hF, String jour, String terrain){
@@ -69,6 +69,11 @@ public class InterfaceRequete {
         return "SELECT idMembre from Membre where idMembre = '" + id + "'" ;
     }
     
+    /* 
+            STATISTIQUES
+    
+    */
+    
     public static String seekMoniteurs()
     {
         return "SELECT PRENOM,NOM FROM MONITEUR";
@@ -89,19 +94,47 @@ public class InterfaceRequete {
     {
         return "SELECT IDSTAGE FROM STAGE";
     }
-    
-    public String countInscritsStage() {
-        return "SELECT IDSTAGE, COUNT(*) "
-                + "FROM PARTICIPE"
-                + " GROUP BY IDSTAGE";
-    }
+
     
      public String countSupervision() {
         return "SELECT IDMONITEUR, COUNT(*) "
-                + "FROM AFFECTATION_SUPERVISION "
+                + "FROM STAGE "
                 + "GROUP BY IDMONITEUR";
      }
-    
+     
+     public String countEncadrement() {
+        return "SELECT IDMONITEUR, COUNT(*)"
+                + "FROM ENCADRE " 
+                + "GROUP BY IDMONITEUR";
+    }
+     
+     public String printPersonne() 
+     {
+         return "SELECT * FROM PERSONNE";
+     }
+     
+     
+     public String recettes() {
+        return "SELECT SUM(PRIX) "
+                + "FROM PARTICIPE "
+                + "WHERE DATEINSCRIPTION <= TO_DATE('2017/12/31','yyyy/mm/dd') "
+                + "AND DATEINSCRIPTION >= TO_DATE('2017/01/01','yyyy/mm/dd')";
+    }
+     
+     public String nbStagiaires() {
+        return "SELECT COUNT(DISTINCT IDMEMBRE) FROM PARTICIPE";
+    }
+     
+     public String nbStages()
+     {
+         return "SELECT COUNT(*) FROM STAGE";
+     }
+     
+     public String nbInscriptions()
+     {
+         return "SELECT COUNT(*) FROM PARTICIPE";
+     }
+     
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){

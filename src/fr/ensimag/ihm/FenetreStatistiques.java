@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,14 +18,15 @@ import javax.swing.JPanel;
 public class FenetreStatistiques extends JPanel implements ActionListener {
     
     private JLabel LabelNbStagiaires = new JLabel("Nombre de stagiaires : ");
-    private JLabel LabelSqlStagiaires = new JLabel("1");
+    private JLabel LabelSqlStagiaires = new JLabel("Indéfini");
     private JLabel LabelRecettes = new JLabel("Total des recettes de l'association pour l'année en cours : ");
-    private JLabel LabelSqlRecettes = new JLabel("1 €");
+    private JLabel LabelSqlRecettes = new JLabel("Indéfini");
+    private JLabel LabelNbMoyenInsc = new JLabel("Nombre moyen d'inscrits par stage : ");
+    private JLabel LabelSqlNbMoyenInsc = new JLabel("Indéfini");
     private Box bv = Box.createVerticalBox();
     
     // boutons
     private JButton boutonTerrains = new JButton("Terrains les plus utilisés");
-    private JButton boutonInscrits = new JButton("Nombre moyen d'inscrits par stage");
     private JButton boutonRatio= new JButton("Ratio supervision/encadrement des moniteurs");
     private JButton boutonActualiser = new JButton("Actualiser");
     
@@ -43,6 +45,12 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         boxNbStagiaires.add(this.LabelSqlStagiaires);
         this.bv.add(boxNbStagiaires);
         
+        
+        // nombre moyen d'inscrits par stage
+        Box boxIns= Box.createHorizontalBox();
+        boxIns.add(this.LabelNbMoyenInsc);
+        boxIns.add(this.LabelNbMoyenInsc);
+        this.bv.add(boxIns);
                 
         // recettes de l'association
         Box boxRecettes = Box.createHorizontalBox();
@@ -52,11 +60,10 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
 
         
         this.boutonTerrains.addActionListener(this);
-        this.boutonInscrits.addActionListener(this);
         this.boutonRatio.addActionListener(this);
+        this.boutonActualiser.addActionListener(this);
         
         this.bv.add(boutonTerrains);
-        this.bv.add(boutonInscrits);
         this.bv.add(boutonRatio);
         // bouton "Actualiser", qui appelle un fonction qui recalcule les variables importantes
         this.bv.add(boutonActualiser);
@@ -98,37 +105,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             f.setLocationRelativeTo(null);
             f.setVisible(true);
         }
-        if (arg0.getSource() == this.boutonInscrits) {
-            JFrame f = new JFrame("Nombre moyen d'inscrits par stage");
-            
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-            int height = screenSize.height * 1/2;
-            int width = screenSize.width * 1/8;
-            f.setPreferredSize(new Dimension(width, height));
-
-            RequetesGenerales reqG = new RequetesGenerales(conn);
-            ArrayList<String> set = reqG.CountInscritsStage();
-            
-            String[] data;
-            if (set != null) {
-                data = new String[set.size()/2];
-                for (int i = 0; i < set.size()-1 ; i+=2){
-                data[i] =  set.get(i) + " : " + set.get(i+1);
-                 }
-            }
-            else
-            {
-                data = new String[2];
-                data[0] = "Stage 1";
-            }
-            
-            f.add(new JList(data));
-            f.pack();
-            f.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            f.setLocationRelativeTo(null);
-            f.setVisible(true);
-        }
+        
         if (arg0.getSource() == this.boutonRatio) {
             JFrame f = new JFrame("Ratio supervision/encadrement des moniteurs");
             
@@ -140,16 +117,45 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             
             String moniteur = new String("Moniteur");
             
-            String[] data = new String[15];
-            for (int i = 0; i < 10 ; i++){
-                data[i] = moniteur + i + " : ratio";
+            RequetesGenerales reqG = new RequetesGenerales(conn);
+            
+            Map<String,String> supervisions = reqG.CountSupervision();
+            Map<String,String> encadrements = reqG.CountEncadrement();
+            int max = supervisions.size();
+            if (encadrements.size() > max) max = encadrements.size();
+            String[] data = new String[max];
+            int i = 0;
+            for (String id : supervisions.keySet())
+            {
+                if (encadrements.containsKey(id))
+                {
+                    ArrayList<String> temp = reqG.getMoniteur(id);
+                    data[i] = temp.get(0)+ " " + temp.get(1) + " : " + Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
+                    
+                }
             }
-          
             f.add(new JList(data));
             f.pack();
             f.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             f.setLocationRelativeTo(null);
             f.setVisible(true);
+        }
+        
+        if (arg0.getSource() == this.boutonActualiser) {
+            RequetesGenerales reqG = new RequetesGenerales(conn);
+            
+            String recettes = reqG.recettes();
+            LabelSqlRecettes.setText(recettes);
+            
+            String nbStagiaires = reqG.NbStagiaires();
+            LabelSqlStagiaires.setText(nbStagiaires);
+            
+            String nbStages = reqG.NbStages();
+            String nbInsc = reqG.NbInscriptions();
+            int nbMoy=0;
+            if (Integer.parseInt(nbStages) != 0)
+             nbMoy = Integer.parseInt(nbInsc)/Integer.parseInt(nbStages);
+            LabelSqlNbMoyenInsc.setText(nbMoy+"");
         }
         
        

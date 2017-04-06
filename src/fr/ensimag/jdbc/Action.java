@@ -2,6 +2,8 @@ package fr.ensimag.jdbc;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Action {
     static Connection conn;
@@ -87,6 +89,37 @@ public class Action {
                     set.add(rset.getString(j));
                 }
                 }
+            }
+            
+	    // Affichage du resultat
+            System.out.println("Results:");
+            dumpResultRequete(rset);
+            System.out.println("");
+
+	    // Fermeture 
+	    rset.close();
+            stmt.close();
+            //conn.close();
+
+        } catch (SQLException e) {
+            System.err.println("failed");
+            e.printStackTrace(System.err);
+        }
+    return set;
+    }
+    
+    public Map<String,String> requeteMap(String requete) {
+        Map<String,String> set = new HashMap<>();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(requete);
+	    // Execution de la requete
+            ResultSet rset = stmt.executeQuery();
+                
+            ResultSetMetaData rsetmd = rset.getMetaData();
+            int i = rsetmd.getColumnCount();
+            while (rset.next()) {
+                if ((rset.getString(1) != null) && (rset.getString(2) != null))
+                    set.put(rset.getString(1),rset.getString(2));    
             }
             
 	    // Affichage du resultat
