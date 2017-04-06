@@ -96,9 +96,16 @@ public class InterfaceRequete {
                 + " GROUP BY IDSTAGE";
     }
     
+     public String countSupervision() {
+        return "SELECT IDMONITEUR, COUNT(*) "
+                + "FROM AFFECTATION_SUPERVISION "
+                + "GROUP BY IDMONITEUR";
+     }
+     
     public String printTerrainsParSport(String sport) {
-        
+        return "";
     }
+    
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){

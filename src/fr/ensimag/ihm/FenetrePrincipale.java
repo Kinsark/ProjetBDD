@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
+    
+    static final String CONN_URL = "jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1";
+    static final String USER = "garatc";
+    static final String PASSWD = "garatc";
 
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menuAjout = new JMenu("Ajouter");
@@ -27,7 +32,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     private JMenuItem itemAfficher = new JMenuItem("Afficher");
     private JMenuItem itemAPropos = new JMenuItem("A propos...");
     
-    private Connection conn;
+    protected Connection conn;
     
     public Connection getConn()
     {
@@ -42,6 +47,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         this.conn = conn;
+        
         // gestion du menu
         this.menuAjout.add(this.itemStage);
         this.menuAjout.addSeparator();
@@ -95,13 +101,25 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws SQLException {
-        Connexion connec = new Connexion();
+
+        Connection connec = null;
+        try {
+            // Enregistrement du driver Oracle
+	    System.out.print("Loading Oracle driver... "); 
+	    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            System.out.println("loaded");
+
+	    // Etablissement de la connexion
+	    System.out.print("Connecting to the database... "); 
+	    connec = DriverManager.getConnection(CONN_URL, USER, PASSWD);
+            System.out.println("connected");
+            
+        } catch (SQLException e) {
+            System.err.println("failed");
+            e.printStackTrace(System.err);
+        }
         
-        FenetrePrincipale fp = new FenetrePrincipale(connec.getConn());
-        // A modif
-        
-        Action action = new Action(fp.getConn());
-        InterfaceRequete intReq = new InterfaceRequete();
+        FenetrePrincipale fp = new FenetrePrincipale(connec);
         
         // on ferme la connexion quand l'user quitte l'application
         // pb : si l'app crash la connexion ne ferme pas
