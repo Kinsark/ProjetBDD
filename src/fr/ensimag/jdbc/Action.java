@@ -72,7 +72,7 @@ public class Action {
     
     return idString ;}
     
-    public ArrayList<String> requeteSet(String requete) {
+    public ArrayList<String> requeteSet(String requete, int nbArgs) {
         ArrayList<String> set = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(requete);
@@ -82,10 +82,11 @@ public class Action {
             ResultSetMetaData rsetmd = rset.getMetaData();
             int i = rsetmd.getColumnCount();
             while (rset.next()) {
-                if (rset.getString(1) != null)
-                    set.add(rset.getString(1));
-                if (rset.getString(2) != null)
-                    set.add(rset.getString(2));
+                for (int j = 1; j < nbArgs+1; j++) {
+                if (rset.getString(j) != null) {
+                    set.add(rset.getString(j));
+                }
+                }
             }
             
 	    // Affichage du resultat

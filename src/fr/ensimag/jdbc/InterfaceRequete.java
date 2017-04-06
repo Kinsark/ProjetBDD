@@ -74,6 +74,17 @@ public class InterfaceRequete {
         return "SELECT PRENOM,NOM FROM MONITEUR";
     }
     
+    public String countTerrains() {
+        return "SELECT NOMTERRAIN, COUNT(*)"
+                + "FROM STAGE "
+                + "GROUP BY NOMTERRAIN";
+    }
+    
+    public String printTerrains()
+    {
+        return "SELECT NOMTERRAIN FROM TERRAIN";
+    }
+    
     
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/

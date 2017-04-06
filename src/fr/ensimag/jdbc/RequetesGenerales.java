@@ -79,7 +79,13 @@ public class RequetesGenerales {
      public ArrayList<String> SeekMoniteurs()
      {  
          act.requete(ir.printMoniteur());
-         return act.requeteSet(ir.seekMoniteurs());
+         return act.requeteSet(ir.seekMoniteurs(),2);
      }
 
+     public ArrayList<String> CountTerrains()
+     {
+         act.requete(ir.printTerrains());
+         return act.requeteSet(ir.countTerrains(),2);
+     }
+     
 }

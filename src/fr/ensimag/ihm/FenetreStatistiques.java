@@ -1,10 +1,12 @@
 package fr.ensimag.ihm;
 
+import fr.ensimag.jdbc.RequetesGenerales;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -73,11 +75,21 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             f.setPreferredSize(new Dimension(width, height));
             
             
-            String terrain = new String("Terrain");
+
+            RequetesGenerales reqG = new RequetesGenerales(conn);
+            ArrayList<String> set = reqG.CountTerrains();
             
-            String[] data = new String[15];
-            for (int i = 0; i < 10 ; i++){
-                data[i] = terrain + i + " : nbUtilisation";
+            String[] data;
+            if (set != null) {
+                data = new String[set.size()/2];
+                for (int i = 0; i < set.size()-1 ; i+=2){
+                data[i] =  set.get(i) + " : " + set.get(i+1);
+                 }
+            }
+            else
+            {
+                data = new String[2];
+                data[0] = "Terrain 1";
             }
             
             f.add(new JList(data));

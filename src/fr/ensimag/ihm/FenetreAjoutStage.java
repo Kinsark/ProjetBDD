@@ -230,24 +230,18 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 ArrayList<String> set = new ArrayList<>();
 		dualMoniteurs.setSourceChoicesTitle("Liste des moniteurs");
 		dualMoniteurs.setDestinationChoicesTitle("Moniteurs sélectionnés");
-		// TODO : trouver les moniteurs pouvant assurer le cours
-		/*dualMoniteurs.addSourceElements(new String[]{"One", "Two", "Three"});
-		dualMoniteurs.addSourceElements(new String[]{"Four", "Five", "Six"});
-		dualMoniteurs.addSourceElements(new String[]{"Seven", "Eight", "Nine"});
-		dualMoniteurs.addSourceElements(new String[]{"Ten", "Eleven", "Twelve"});
-		dualMoniteurs.addSourceElements(new String[]{"Thirteen", "Fourteen",
-			"Fifteen"});
-		dualMoniteurs.addSourceElements(new String[]{"Sixteen", "Seventeen",
-			"Eighteen"});
-		dualMoniteurs.addSourceElements(new String[]{"Nineteen", "Twenty", "Thirty"});*/
+		// TODO : parmi les moniteurs, verifier ceux qui peuvent encadrer ce stage
+
                 RequetesGenerales re = new RequetesGenerales(conn);
                 set = re.SeekMoniteurs();
                 
+                if (set != null)
+                {
                 int setSize = set.size();
                 for (int j = 0; j < setSize-1; j+=2)
                 {
                   dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j+1)});
-                }
+                }}
                 
                 
 		this.frameMoniteurs.getContentPane().add(dualMoniteurs, BorderLayout.CENTER);
