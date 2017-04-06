@@ -15,15 +15,15 @@ public class Statistiques {
     
     // Renvoie les stages et le nombre de participants pour chacun des stages
     public String countInscritsStage() {
-        return "SELECT IDSTAGE, COUNT(*)"
-                + "FROM PARTICIPE"
+        return "SELECT IDSTAGE, COUNT(*) "
+                + "FROM PARTICIPE "
                 + "GROUP BY IDSTAGE";
     }
 
     // Renvoie les moniteurs et le nombre de supervisions par moniteur
     public String countSupervision() {
-        return "SELECT IDMONITEUR, COUNT(*)"
-                + "FROM AFFECTATION_SUPERVISION"
+        return "SELECT IDMONITEUR, COUNT(*) "
+                + "FROM AFFECTATION_SUPERVISION "
                 + "GROUP BY IDMONITEUR";
     }
     // On gèrera ensuite le cas où un moniteur n'apparaît que dans un des deux tuples 
