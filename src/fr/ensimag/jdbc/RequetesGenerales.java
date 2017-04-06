@@ -94,5 +94,10 @@ public class RequetesGenerales {
          return act.requeteSet(ir.countInscritsStage(),2);
      }
      
+     public ArrayList<String> getTerrainsParSport(String sport) {
+         act.requete(ir.printTerrainsParSport(sport));
+         return act.requeteSet(ir.countInscritsStage(),1);
+     }
+     
      
 }

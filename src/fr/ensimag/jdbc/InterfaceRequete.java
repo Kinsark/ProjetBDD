@@ -96,7 +96,9 @@ public class InterfaceRequete {
                 + " GROUP BY IDSTAGE";
     }
     
-    
+    public String printTerrainsParSport(String sport) {
+        
+    }
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){
