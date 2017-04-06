@@ -49,7 +49,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
         // nombre moyen d'inscrits par stage
         Box boxIns= Box.createHorizontalBox();
         boxIns.add(this.LabelNbMoyenInsc);
-        boxIns.add(this.LabelNbMoyenInsc);
+        boxIns.add(this.LabelSqlNbMoyenInsc);
         this.bv.add(boxIns);
                 
         // recettes de l'association
@@ -128,12 +128,16 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             {
                 if (encadrements.containsKey(id))
                 {
+                    System.out.println("coucou");
                     ArrayList<String> temp = reqG.getMoniteur(id);
+                    System.out.println(temp.get(0) + temp.get(1));
                     data[i] = temp.get(0)+ " " + temp.get(1) + " : " + Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
                     
                 }
                 i++;
             }
+            
+            
             f.add(new JList(data));
             f.pack();
             f.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
