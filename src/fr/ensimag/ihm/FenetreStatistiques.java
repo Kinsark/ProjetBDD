@@ -115,7 +115,6 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             int width = screenSize.width * 1/8;
             f.setPreferredSize(new Dimension(width, height));
             
-            String moniteur = new String("Moniteur");
             
             RequetesGenerales reqG = new RequetesGenerales(conn);
             
@@ -133,6 +132,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
                     data[i] = temp.get(0)+ " " + temp.get(1) + " : " + Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
                     
                 }
+                i++;
             }
             f.add(new JList(data));
             f.pack();
