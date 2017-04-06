@@ -1,5 +1,6 @@
 package fr.ensimag.ihm;
 
+import fr.ensimag.jdbc.RequetesGenerales;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -13,8 +14,8 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -22,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -227,10 +227,11 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 	}
 
 	private void initFrameMoniteurs() {
+                ArrayList<String> set = new ArrayList<>();
 		dualMoniteurs.setSourceChoicesTitle("Liste des moniteurs");
 		dualMoniteurs.setDestinationChoicesTitle("Moniteurs sélectionnés");
 		// TODO : trouver les moniteurs pouvant assurer le cours
-		dualMoniteurs.addSourceElements(new String[]{"One", "Two", "Three"});
+		/*dualMoniteurs.addSourceElements(new String[]{"One", "Two", "Three"});
 		dualMoniteurs.addSourceElements(new String[]{"Four", "Five", "Six"});
 		dualMoniteurs.addSourceElements(new String[]{"Seven", "Eight", "Nine"});
 		dualMoniteurs.addSourceElements(new String[]{"Ten", "Eleven", "Twelve"});
@@ -238,7 +239,17 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 			"Fifteen"});
 		dualMoniteurs.addSourceElements(new String[]{"Sixteen", "Seventeen",
 			"Eighteen"});
-		dualMoniteurs.addSourceElements(new String[]{"Nineteen", "Twenty", "Thirty"});
+		dualMoniteurs.addSourceElements(new String[]{"Nineteen", "Twenty", "Thirty"});*/
+                RequetesGenerales re = new RequetesGenerales(conn);
+                set = re.SeekMoniteurs();
+                
+                int setSize = set.size();
+                for (int j = 0; j < setSize-1; j+=2)
+                {
+                  dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j+1)});
+                }
+                
+                
 		this.frameMoniteurs.getContentPane().add(dualMoniteurs, BorderLayout.CENTER);
 		this.frameMoniteurs.setSize(600, 300);
 		this.frameMoniteurs.setLocationRelativeTo(null);

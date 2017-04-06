@@ -39,7 +39,7 @@ public class InterfaceRequete {
     
     public static String printMembre()
     {
-        return "SELECT NOM,PRENOM FROM MEMBRE";
+        return "SELECT NOM,PRENOM,DATENAISSANCE FROM MEMBRE";
     }
     
     public static String testPersonne(String nom, String prenom, String email, String telephone){
@@ -68,6 +68,13 @@ public class InterfaceRequete {
     public static String testMembre(String id){
         return "SELECT idMembre from Membre where idMembre = '" + id + "'" ;
     }
+    
+    public static String seekMoniteurs()
+    {
+        return "SELECT PRENOM,NOM FROM MONITEUR";
+    }
+    
+    
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){

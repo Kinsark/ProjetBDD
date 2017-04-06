@@ -1,7 +1,7 @@
 package fr.ensimag.jdbc;
 
-import static fr.ensimag.jdbc.Requete.CONN_URL;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Action {
     static Connection conn;
@@ -71,6 +71,39 @@ public class Action {
         }
     
     return idString ;}
+    
+    public ArrayList<String> requeteSet(String requete) {
+        ArrayList<String> set = new ArrayList<>();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(requete);
+	    // Execution de la requete
+            ResultSet rset = stmt.executeQuery();
+                
+            ResultSetMetaData rsetmd = rset.getMetaData();
+            int i = rsetmd.getColumnCount();
+            while (rset.next()) {
+                if (rset.getString(1) != null)
+                    set.add(rset.getString(1));
+                if (rset.getString(2) != null)
+                    set.add(rset.getString(2));
+            }
+            
+	    // Affichage du resultat
+            System.out.println("Results:");
+            dumpResultRequete(rset);
+            System.out.println("");
+
+	    // Fermeture 
+	    rset.close();
+            stmt.close();
+            //conn.close();
+
+        } catch (SQLException e) {
+            System.err.println("failed");
+            e.printStackTrace(System.err);
+        }
+    return set;
+    }
     
     public void transaction(String requete){
         try {

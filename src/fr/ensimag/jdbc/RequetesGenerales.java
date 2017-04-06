@@ -6,6 +6,7 @@
 package fr.ensimag.jdbc;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  *
@@ -75,6 +76,10 @@ public class RequetesGenerales {
             }
      }
 
-
+     public ArrayList<String> SeekMoniteurs()
+     {  
+         act.requete(ir.printMoniteur());
+         return act.requeteSet(ir.seekMoniteurs());
+     }
 
 }
