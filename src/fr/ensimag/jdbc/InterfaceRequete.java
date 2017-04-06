@@ -11,8 +11,9 @@ public class InterfaceRequete {
                 + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMoniteur + ")";
     }
     
-    public static String ajoutMembre(String idMembre, String dateN){
-        return "INSERT INTO Membre(IdMembre, dateNaissance) VALUES('" + idMembre + "','" + dateN + "')";
+    public static String ajoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMembre, String dateN){
+        return "INSERT INTO MEMBRE VALUES('" + nom + "', '" + prenom + "', '" + email
+                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMembre + ",TO_DATE('" + dateN + "','dd/mm/yyyy'))";
     }
     
     public static String ajoutPersonne(String nom, String prenom, String email
@@ -34,6 +35,11 @@ public class InterfaceRequete {
     public static String printMoniteur()
     {
         return "SELECT NOM,PRENOM FROM MONITEUR";
+    }
+    
+    public static String printMembre()
+    {
+        return "SELECT NOM,PRENOM FROM MEMBRE";
     }
     
     public static String testPersonne(String nom, String prenom, String email, String telephone){

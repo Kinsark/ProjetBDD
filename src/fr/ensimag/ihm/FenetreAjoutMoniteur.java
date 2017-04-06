@@ -20,7 +20,6 @@ public class FenetreAjoutMoniteur extends FenetreAjoutPersonne {
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.boutonValider) {
             if (super.verifierFormulaire()) {
-                // TODO : mettre dans la BDD
                 String nom = tfNom.getText();
                 String prenom = tfPrenom.getText();
                 String email = tfEmail.getText();
@@ -30,10 +29,12 @@ public class FenetreAjoutMoniteur extends FenetreAjoutPersonne {
                 String commune = tfCommune.getText();
                 
                 RequetesGenerales reqGe = new RequetesGenerales(conn);
-                reqGe.AjoutMoniteur(nom,prenom,email,telephone,numeroVoie,nomVoie,commune);
-                
-                super.getJOP().showMessageDialog(null, "Moniteur ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                
+                boolean notInBDD = reqGe.AjoutMoniteur(nom,prenom,email,telephone,numeroVoie,nomVoie,commune);
+                if (notInBDD)
+                    super.getJOP().showMessageDialog(null, "Moniteur ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    super.getJOP().showMessageDialog(null, "Moniteur déjà inscrit !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+  
             }
         }
     }

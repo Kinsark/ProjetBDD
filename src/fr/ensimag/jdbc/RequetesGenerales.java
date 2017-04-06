@@ -20,8 +20,9 @@ public class RequetesGenerales {
             this.ir = new InterfaceRequete();
             this.act = new Action(conn);
         }
-    public void AjoutMoniteur(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal){
+    public boolean AjoutMoniteur(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal){
         String idS = act.requeteId(ir.testPersonne(nom,prenom,email,telephone));
+        boolean bool = (idS == null);
                 if (idS == null){
                 
                     if (act.requete(ir.testCommune(codePostal)) == false){
@@ -39,11 +40,13 @@ public class RequetesGenerales {
             
                 }
                 // à decommenter si vous voulez verifier l'etat de la table
-                //act.requete(ir.printMoniteur());
+                act.requete(ir.printMoniteur());
+                return bool;
        }
 
-    public void AjoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal, String dateN){
+    public boolean AjoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal, String dateN){
         String idS = act.requeteId(ir.testPersonne(nom,prenom,email,telephone));
+        boolean bool = (idS == null);
                 if (idS == null){
                 
                     if (act.requete(ir.testCommune(codePostal)) == false){
@@ -52,15 +55,18 @@ public class RequetesGenerales {
                     
                     act.transaction(ir.ajoutPersonne(nom,prenom,email,telephone,numero,rue, codePostal));
                     idS = act.requeteId(ir.testPersonne(nom,prenom,email,telephone));
-                    act.transaction(ir.ajoutMembre(idS, dateN));
+                    act.transaction(ir.ajoutMembre(nom,prenom,email,telephone,numero,rue,codePostal,idS, dateN));
         }
                  else {
                     if (act.requete(ir.testMembre(idS)) == false){
-                        act.transaction(ir.ajoutMembre(idS,dateN));
+                        act.transaction(ir.ajoutMembre(nom,prenom,email,telephone,numero,rue,codePostal,idS, dateN));
                     }
             
             
         }
+                // à decommenter si vous voulez verifier l'etat de la table
+                act.requete(ir.printMembre());
+                return bool;
        }
     
      public void AjoutStage(String heureDebut, String heureFin, String jour, String sport, String terrain){

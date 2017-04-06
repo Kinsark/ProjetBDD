@@ -1,5 +1,6 @@
 package fr.ensimag.ihm;
 
+import fr.ensimag.jdbc.RequetesGenerales;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -37,8 +38,21 @@ public class FenetreAjoutMembre extends FenetreAjoutPersonne {
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.boutonValider) {
             if (this.verifierFormulaire()) {
-                // TODO : mettre dans la BDD
-                super.getJOP().showMessageDialog(null, "Membre ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                String nom = tfNom.getText();
+                String prenom = tfPrenom.getText();
+                String email = tfEmail.getText();
+                String telephone = tfTelephone.getText();
+                String numeroVoie = tfNumeroVoie.getText();
+                String nomVoie = tfNomVoie.getText();
+                String commune = tfCommune.getText();
+                String dateN = ftfDateNaissance.getText();
+                
+                RequetesGenerales reqGe = new RequetesGenerales(conn);
+                boolean notInBDD = reqGe.AjoutMembre(nom,prenom,email,telephone,numeroVoie,nomVoie,commune,dateN);
+                if (notInBDD)
+                    super.getJOP().showMessageDialog(null, "Membre ajouté !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    super.getJOP().showMessageDialog(null, "Membre déjà inscrit !", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
