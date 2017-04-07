@@ -47,7 +47,7 @@ public class InterfaceRequete {
     }
     
     public static String testMoniteur(String id){
-       return "SELECT idMoniteur from Moniteur where idMoniteur = " + id ;
+       return "SELECT NOM, PRENOM from Moniteur where idMoniteur = " + id ;
     }
     
     public static String testStage(String hD, String hF, String jour, String terrain){
@@ -69,15 +69,21 @@ public class InterfaceRequete {
         return "SELECT idMembre from Membre where idMembre = '" + id + "'" ;
     }
     
+    /* 
+            STATISTIQUES
+    
+    */
+    
     public static String seekMoniteurs()
     {
         return "SELECT PRENOM,NOM FROM MONITEUR";
     }
     
     public String countTerrains() {
-        return "SELECT NOMTERRAIN, COUNT(*)"
+        return "SELECT NOMTERRAIN, COUNT(*) AS THECOUNT "
                 + "FROM STAGE "
-                + "GROUP BY NOMTERRAIN";
+                + "GROUP BY NOMTERRAIN "
+                + "ORDER BY THECOUNT DESC";
     }
     
     public String printTerrains()
@@ -89,20 +95,48 @@ public class InterfaceRequete {
     {
         return "SELECT IDSTAGE FROM STAGE";
     }
-    
-    public String countInscritsStage() {
-        return "SELECT IDSTAGE, COUNT(*) "
-                + "FROM PARTICIPE"
-                + " GROUP BY IDSTAGE";
-    }
+
     
      public String countSupervision() {
         return "SELECT IDMONITEUR, COUNT(*) "
-                + "FROM AFFECTATION_SUPERVISION "
+                + "FROM STAGE "
                 + "GROUP BY IDMONITEUR";
      }
      
-    public String printTerrainsParSport(String sport) {
+     public String countEncadrement() {
+        return "SELECT IDMONITEUR, COUNT(*)"
+                + "FROM ENCADRE " 
+                + "GROUP BY IDMONITEUR";
+    }
+     
+     public String printPersonne() 
+     {
+         return "SELECT * FROM PERSONNE";
+     }
+     
+     
+     public String recettes() {
+        return "SELECT SUM(PRIX) "
+                + "FROM PARTICIPE "
+                + "WHERE DATEINSCRIPTION <= TO_DATE('2017/12/31','yyyy/mm/dd') "
+                + "AND DATEINSCRIPTION >= TO_DATE('2017/01/01','yyyy/mm/dd')";
+    }
+     
+     public String nbStagiaires() {
+        return "SELECT COUNT(DISTINCT IDMEMBRE) FROM PARTICIPE";
+    }
+     
+     public String nbStages()
+     {
+         return "SELECT COUNT(*) FROM STAGE";
+     }
+     
+     public String nbInscriptions()
+     {
+         return "SELECT COUNT(*) FROM PARTICIPE";
+     }
+     
+     public String printTerrainsParSport(String sport) {
         return "SELECT DISTINCT t.NOMTERRAIN "
                + "FROM TERRAIN t, POSSIBILITE_PRATIQUER p, SPORT s "
                 + "WHERE t.TYPETERRAIN = p.TYPETERRAIN AND p.NOMSPORT = " + sport + " AND p.NOMSPORT = s.NOMSPORT";
@@ -122,7 +156,7 @@ public class InterfaceRequete {
                 + "((" + debut + " <= s.HEUREFIN AND s.HEUREFIN <= " + fin + ")"
                 + " OR (" + debut + " > s.HEUREDEBUT AND s.HEUREDEBUT >= " + fin + ")))";
     }
-    
+     
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){
