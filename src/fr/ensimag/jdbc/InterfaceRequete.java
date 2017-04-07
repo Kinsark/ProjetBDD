@@ -152,9 +152,15 @@ public class InterfaceRequete {
         return "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m) " 
                 + "MINUS "
                 + "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m, STAGE s, PARTICIPE p "
-                + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE AND " 
-                + "((" + debut + " <= s.HEUREFIN AND s.HEUREFIN <= " + fin + ")"
-                + " OR (" + debut + " > s.HEUREDEBUT AND s.HEUREDEBUT >= " + fin + ")))";
+                + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE "
+                + "AND (" 
+                + "(" + debut + " < " + "s.HEUREDEBUT" +  " AND " + "s.HEUREDEBUT" + " < " + fin + ")"
+                + " OR "
+                + "(" + debut + " < " + "s.HEUREFIN" +  " AND " + "s.HEUREFIN" + " < " + fin + ")"
+                + " OR "
+                + "(" + "s.HEUREDEBUT" + " <= " + debut +  " AND " + fin + " <= " + "s.HEUREFIN" + ")"
+                + ")"
+                + ")";
     }
      
     public String printMoniteursDispos(String heureDebut, String heureFin, String jour, String sport)
