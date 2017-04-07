@@ -70,16 +70,7 @@ public class RequetesGenerales {
         return bool;
     }
 
-    public void AjoutStage(String heureDebut, String heureFin, String jour, String sport, String terrain) {
-        if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour)) == false) {
 
-        }
-<<<<<<< HEAD
-                // à decommenter si vous voulez verifier l'etat de la table
-                act.requete(ir.printMembre());
-                return bool;
-       }
-    
      public void AjoutStage(String heureDebut, String heureFin, String jour, String sport, String terrain){
             if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour)) == false){
                 
@@ -149,59 +140,4 @@ public class RequetesGenerales {
          return act.requeteSet(ir.printMoniteursDispos(heureDebut, heureFin, jour, sport), 2);
      }
      
-     
-=======
-    }
-
-    public ArrayList<String> SeekMoniteurs() {
-        act.requete(ir.printMoniteur());
-        return act.requeteSet(ir.seekMoniteurs(), 2);
-    }
-
-    public ArrayList<String> CountTerrains() {
-        act.requete(ir.printTerrains());
-        return act.requeteSet(ir.countTerrains(), 2);
-    }
-
-    public Map<String, String> CountSupervision() {
-        return act.requeteMap(ir.countSupervision());
-    }
-
-    public Map<String, String> CountEncadrement() {
-        return act.requeteMap(ir.countEncadrement());
-    }
-
-    public String recettes() {
-        return act.requeteId(ir.recettes());
-    }
-
-    public ArrayList<String> getMoniteur(String id) {
-        return act.requeteSet(ir.testMoniteur(id), 2);
-    }
-
-    public String NbStagiaires() {
-        return act.requeteId(ir.nbStagiaires());
-    }
-
-    public String NbStages() {
-        return act.requeteId(ir.nbStages());
-    }
-
-    public String NbInscriptions() {
-        return act.requeteId(ir.nbInscriptions());
-    }
-
-    public ArrayList<String> getTerrainsParSport(String sport) {
-        return act.requeteSet(ir.printTerrainsParSport(sport), 1);
-    }
-
-    public ArrayList<String> getAllSports() {
-        return act.requeteSet(ir.printSports(), 1);
-    }
-
-    public ArrayList<String> getMembresDisponibles(String heureDebut, String heureFin, String jour) {
-        return act.requeteSet(ir.printMembresDisponibles(heureDebut, heureFin, jour), 2);
-    }
-
->>>>>>> 353bd9879e676a6f6f85ce11d287355130d5eeae
 }
