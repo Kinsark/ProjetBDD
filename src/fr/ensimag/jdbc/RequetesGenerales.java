@@ -96,9 +96,15 @@ public class RequetesGenerales {
 
      
      public ArrayList<String> getTerrainsParSport(String sport) {
-         act.requete(ir.printTerrainsParSport(sport));
-         return act.requeteSet(ir.countInscritsStage(),1);
+         return act.requeteSet(ir.printTerrainsParSport(sport),1);
      }
      
+     public ArrayList<String> getAllSports() {
+         return act.requeteSet(ir.printSports(), 1);
+     }
+     
+     public ArrayList<String> getMembresDisponibles(String heureDebut, String heureFin, String jour) {
+         return act.requeteSet(ir.printMembresDisponibles(heureDebut, heureFin, jour), 2);
+     }
      
 }

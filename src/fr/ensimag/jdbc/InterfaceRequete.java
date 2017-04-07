@@ -103,7 +103,24 @@ public class InterfaceRequete {
      }
      
     public String printTerrainsParSport(String sport) {
-        return "";
+        return "SELECT DISTINCT t.NOMTERRAIN "
+               + "FROM TERRAIN t, POSSIBILITE_PRATIQUER p, SPORT s "
+                + "WHERE t.TYPETERRAIN = p.TYPETERRAIN AND p.NOMSPORT = " + sport + " AND p.NOMSPORT = s.NOMSPORT";
+    }
+    
+    public String printSports() {
+        return "SELECT NOMSPORT FROM SPORT";
+    }
+    
+    public String printMembresDisponibles(String heureDebut, String heureFin, String jour) {
+        String debut = "TO_DATE('" + jour + " " + heureDebut + "', 'dd/mm/yyyy hh24:mi')";
+        String fin = "TO_DATE('" + jour + " " + heureFin + "', 'dd/mm/yyyy hh24:mi')";
+        return "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m) " 
+                + "MINUS "
+                + "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m, STAGE s, PARTICIPE p "
+                + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE AND " 
+                + "((" + debut + " <= s.HEUREFIN AND s.HEUREFIN <= " + fin + ")"
+                + " OR (" + debut + " > s.HEUREDEBUT AND s.HEUREDEBUT >= " + fin + ")))";
     }
     
     /* Ajout moniteur */
