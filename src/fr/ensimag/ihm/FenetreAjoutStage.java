@@ -229,6 +229,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 //            "Eighteen"});
 //        dualStagiaires.addSourceElements(new String[]{"Nineteen", "Twenty", "Thirty"});
         ArrayList<String> set = re.getMembresDisponibles(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText());
+        dualStagiaires.clearSourceListModel();
         for (int i = 0, size = set.size(); i < size; i += 2) {
             dualStagiaires.addSourceElements(new String[]{set.get(i) + " " + set.get(i + 1)});
         }
