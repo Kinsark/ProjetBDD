@@ -147,7 +147,11 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
             this.frameStagiaires.setVisible(true);
         }
         if (arg0.getSource() == this.boutonMoniteur) {
-            this.frameMoniteurs.setVisible(true);
+            if ((ftfHeureFin.getText().equals("  :  ")) || (ftfHeureDebut.getText().equals("  :  ")) || 
+                (ftfJour.getText().equals("  /  /    ")))
+                jop.showMessageDialog(null, "Vous devez sélectionner un créneau !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            else
+                this.frameMoniteurs.setVisible(true);
         }
         if (arg0.getSource() == this.boutonSuperviseur) {
             if (this.dualMoniteurs.getSelectedNumber() == 0) {
@@ -243,8 +247,11 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         dualMoniteurs.setSourceChoicesTitle("Liste des moniteurs");
         dualMoniteurs.setDestinationChoicesTitle("Moniteurs sélectionnés");
         // TODO : parmi les moniteurs, verifier ceux qui peuvent encadrer ce stage
+        
+        
 
-        set = re.SeekMoniteurs();
+        set = re.getMoniteursDispos(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(), 
+                comboSport.getSelectedItem().toString());
 
         if (set != null) {
             int setSize = set.size();

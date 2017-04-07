@@ -136,4 +136,9 @@ public class RequetesGenerales {
          return act.requeteSet(ir.printMembresDisponibles(heureDebut, heureFin, jour), 2);
      }
      
+     public ArrayList<String> getMoniteursDispos(String heureDebut, String heureFin, String jour, String sport) {
+         return act.requeteSet(ir.printMoniteursDispos(heureDebut, heureFin, jour, sport), 2);
+     }
+     
+     
 }

@@ -157,6 +157,33 @@ public class InterfaceRequete {
                 + " OR (" + debut + " > s.HEUREDEBUT AND s.HEUREDEBUT >= " + fin + ")))";
     }
      
+    public String printMoniteursDispos(String heureDebut, String heureFin, String jour, String sport)
+    {
+        String debut = jour + ":" + heureDebut;
+        String fin = jour + ":" + heureFin;
+        return "(SELECT DISTINCT m.NOM, m.PRENOM FROM MONITEUR m, HABILITE h "
+                + "WHERE m.IDMONITEUR = h.IDMONITEUR AND h.NOMSPORT = '" + sport + "') " 
+                + "MINUS "
+                + "(SELECT DISTINCT m.NOM, m.PRENOM FROM MONITEUR m, STAGE s, HABILITE h "
+                + "WHERE m.IDMONITEUR = s.IDMONITEUR AND s.IDMONITEUR = h.IDMONITEUR "
+                + "AND NOT " 
+                + "(TO_CHAR(s.HEUREDEBUT,'dd/mm/yyyy:hh24:mi') >= '" + fin + 
+                "'  OR TO_CHAR(s.HEUREFIN,'dd/mm/yyyy:hh24:mi') <=  '" + debut + "' ))";
+    }
+    
+    public String moniteurEncadre(String idStage, String idMoniteur)
+    {
+        return "INSERT INTO ENCADRE VALUES(" + idStage + ", " + idMoniteur + ")";
+    }
+    
+    public String ajouterStage(String idStage, String heureDebut, String heureFin, String nomSport,
+            String nomTerrain, String idCommune, String idMoniteur, String jour)
+    {
+        return "INSERT INTO STAGE VALUES(" + idStage + ", TO_DATE('" + jour +":"+ heureDebut + "', 'dd/mm/yyyy:hh24:mi'), "
+                + "TO_DATE('" + jour +":"+ heureFin + "', 'dd/mm/yyyy:hh24:mi'), '"
+                + nomSport + "' , '" + nomTerrain + "' , " + idCommune + " ," + idMoniteur + ")";
+    }
+    
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){
