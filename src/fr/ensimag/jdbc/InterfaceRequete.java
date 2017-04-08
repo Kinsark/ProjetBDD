@@ -190,6 +190,18 @@ public class InterfaceRequete {
                 + nomSport + "' , '" + nomTerrain + "' , " + idCommune + " ," + idMoniteur + ")";
     }
     
+    public String ajouterHabilitation(String nomSport, String idMoniteur) {
+        return "INSERT INTO HABILITE VALUES('" + nomSport + "', " + idMoniteur + ")";
+    }
+    
+    public String ajouterExpertise(String nomSport, String idMoniteur) {
+        return "INSERT INTO EXPERT VALUES('" + nomSport + "', " + idMoniteur + ")";
+    }
+    
+    public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
+        return "SELECT IDMONITEUR FROM MONITEUR WHERE NOM = '" + nom + "' AND PRENOM = '" + prenom + "' AND EMAIL = '" + email + "' AND " +
+                "TELEPHONE = '" + telephone + "' AND NUM = " + numero + " AND RUE = '" + rue + "' AND IDCOMMUNE = " + codePostal;
+    }
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){

@@ -140,4 +140,16 @@ public class RequetesGenerales {
          return act.requeteSet(ir.printMoniteursDispos(heureDebut, heureFin, jour, sport), 2);
      }
      
+     public void ajoutHabilitation(String nomSport, String idMoniteur) {
+         act.transaction(ir.ajouterHabilitation(nomSport, idMoniteur));
+     }
+     
+     public void ajoutExpertise(String nomSport, String idMoniteur) {
+         act.transaction(ir.ajouterExpertise(nomSport, idMoniteur));
+     }
+     
+     public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
+         return act.requeteId(ir.getMoniteurId(nom, prenom, email, telephone, numero, rue, codePostal));
+     }
+     
 }
