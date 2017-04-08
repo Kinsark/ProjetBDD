@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.Box;
@@ -18,11 +19,11 @@ import javax.swing.JPanel;
 public class FenetreStatistiques extends JPanel implements ActionListener {
     
     private JLabel LabelNbStagiaires = new JLabel("Nombre de stagiaires : ");
-    private JLabel LabelSqlStagiaires = new JLabel("Indéfini");
+    private JLabel LabelSqlStagiaires = new JLabel("veuillez actualiser");
     private JLabel LabelRecettes = new JLabel("Total des recettes de l'association pour l'année en cours : ");
-    private JLabel LabelSqlRecettes = new JLabel("Indéfini");
+    private JLabel LabelSqlRecettes = new JLabel("veuillez actualiser");
     private JLabel LabelNbMoyenInsc = new JLabel("Nombre moyen d'inscrits par stage : ");
-    private JLabel LabelSqlNbMoyenInsc = new JLabel("Indéfini");
+    private JLabel LabelSqlNbMoyenInsc = new JLabel("veuillez actualiser");
     private Box bv = Box.createVerticalBox();
     
     // boutons
@@ -78,7 +79,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
             int height = screenSize.height * 1/2;
-            int width = screenSize.width * 1/8;
+            int width = screenSize.width * 1/4;
             f.setPreferredSize(new Dimension(width, height));
             
             
@@ -88,7 +89,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             
             String[] data;
             if (set != null) {
-                data = new String[set.size()/2];
+                data = new String[set.size()];
                 for (int i = 0; i < set.size()-1 ; i+=2){
                 data[i] =  set.get(i) + " : " + set.get(i+1);
                  }
@@ -112,7 +113,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
             int height = screenSize.height * 1/2;
-            int width = screenSize.width * 1/8;
+            int width = screenSize.width * 1/4;
             f.setPreferredSize(new Dimension(width, height));
             
             
@@ -131,7 +132,9 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
                     System.out.println("coucou");
                     ArrayList<String> temp = reqG.getMoniteur(id);
                     System.out.println(temp.get(0) + temp.get(1));
-                    data[i] = temp.get(0)+ " " + temp.get(1) + " : " + (double)Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    double ratio = (double) Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
+                    data[i] = temp.get(0)+ " " + temp.get(1) + " : " + df.format(ratio);
                     
                 }
                 i++;
@@ -157,10 +160,11 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             String nbStages = reqG.NbStages();
             String nbInsc = reqG.NbInscriptions();
             double nbMoy=0;
+            DecimalFormat df = new DecimalFormat("#.00");
             if (Integer.parseInt(nbStages) != 0) {
                 nbMoy = (double) Integer.parseInt(nbInsc)/Integer.parseInt(nbStages);
             }
-            LabelSqlNbMoyenInsc.setText(nbMoy+"");
+            LabelSqlNbMoyenInsc.setText(df.format(nbMoy));
         }
         
        

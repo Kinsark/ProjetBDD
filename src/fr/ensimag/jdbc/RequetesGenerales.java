@@ -91,7 +91,6 @@ public class RequetesGenerales {
 
      public ArrayList<String> CountTerrains()
      {
-         act.requete(ir.printTerrains());
          return act.requeteSet(ir.countTerrains(),2);
      }
      
