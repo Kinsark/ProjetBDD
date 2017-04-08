@@ -124,8 +124,8 @@ public class RequetesGenerales {
          return act.requeteId(ir.nbInscriptions());
      }
      
-     public ArrayList<String> getTerrainsParSport(String sport) {
-         return act.requeteSet(ir.printTerrainsParSport(sport),1);
+     public ArrayList<String> getTerrainsParSport(String sport, String idCommune) {
+         return act.requeteSet(ir.printTerrainsParSport(sport, idCommune),1);
      }
      
      public ArrayList<String> getAllSports() {
