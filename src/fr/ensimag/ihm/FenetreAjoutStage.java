@@ -174,7 +174,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 String[] infos = infosMoniteur.split(" ");
                 String idMoniteur = infos[2];
                 
-                re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
+                String idStage = re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
                         comboSport.getSelectedItem().toString(), comboTerrain.getSelectedItem().toString());
                 
                 // ajout des encadrants
@@ -183,6 +183,14 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                     String[] inf = itMoniteurs.next().toString().split(" ");
                     idMoniteur = inf[2];
                     re.AjouterEncadrant(idCommune, idMoniteur);
+                } 
+                
+                // ajout des participants
+                Iterator itStagiaires = dualStagiaires.destinationIterator();
+                while (itStagiaires.hasNext()) {
+                    String[] inf = itStagiaires.next().toString().split(" ");
+                    String idMembre = inf[2];
+                    re.AjoutStagiaire(comboSport.getSelectedItem().toString(), idMembre, idStage, idCommune);
                 } 
                 
                 jop.showMessageDialog(null, "Le stage a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
@@ -249,8 +257,8 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         ArrayList<String> set = re.getMembresDisponibles(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText());
         dualStagiaires.clearSourceListModel();
         dualStagiaires.clearDestinationListModel();
-        for (int i = 0, size = set.size(); i < size; i += 2) {
-            dualStagiaires.addSourceElements(new String[]{set.get(i) + " " + set.get(i + 1)});
+        for (int i = 0, size = set.size(); i < size; i += 3) {
+            dualStagiaires.addSourceElements(new String[]{set.get(i) + " " + set.get(i + 1) + " " + set.get(i+2)});
         }
         this.frameStagiaires.getContentPane().add(dualStagiaires, BorderLayout.CENTER);
         this.frameStagiaires.setSize(600, 300);
