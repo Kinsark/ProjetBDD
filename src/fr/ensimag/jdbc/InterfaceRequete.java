@@ -6,14 +6,13 @@ public class InterfaceRequete {
     private int idCompt=0;
     
     
-    public static String ajoutMoniteur(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMoniteur){
-        return "INSERT INTO MONITEUR VALUES('" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMoniteur + ")";
+    public static String ajoutMoniteur(String idMoniteur){
+        return "INSERT INTO MONITEUR(IDMONITEUR) VALUES('" + idMoniteur + "')";
     }
     
-    public static String ajoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMembre, String dateN){
-        return "INSERT INTO MEMBRE VALUES('" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMembre + ",TO_DATE('" + dateN + "','dd/mm/yyyy'))";
+    public static String ajoutMembre(String idMembre, String dateN){
+        return "INSERT INTO MEMBRE(IDMEMBRE, DATENAISSANCE)  VALUES('" + idMembre 
+                + "',TO_DATE('" + dateN + "','dd/mm/yyyy'))";
     }
     
     public static String ajoutPersonne(String nom, String prenom, String email
@@ -22,6 +21,20 @@ public class InterfaceRequete {
                 + ", NUM, RUE, IDCOMMUNE) "
                 + "VALUES(" +"IDPersonne.nextval" + ", '" + nom + "', '" + prenom + "', '" + email
                 + "', '" + telephone + "', " + num + ", '" + rue + "'," + codePostal + ")";
+    }
+    
+    public String getCommuneFromTerrain(String nomTerrain)
+    {
+        return "SELECT IDCOMMUNE FROM TERRAIN WHERE NOMTERRAIN = '" + nomTerrain + "'"; 
+    }
+    
+    public static String ajoutStage(String heureDebut, String heureFin, String nomSport, 
+            String nomTerrain, String idCommune, String idMoniteur, String jour){
+        String debut = "TO_DATE('"+jour+":"+heureDebut+"', 'dd/mm/yyyy:hh24:mi')";
+        String fin = "TO_DATE('"+jour+":"+heureFin+"', 'dd/mm/yyyy:hh24:mi')";
+        return "INSERT INTO STAGE "
+                + "VALUES (" + "IDSTAGE.nextval" + ", " + debut + ", " + fin + ", '"
+                + nomSport + "', '" + nomTerrain + "', " + idCommune + ", " + idMoniteur + ")";
     }
     
     public static String ajoutCommune(String commune){
@@ -50,11 +63,11 @@ public class InterfaceRequete {
        return "SELECT NOM, PRENOM from Moniteur where idMoniteur = " + id ;
     }
     
-    public static String testStage(String hD, String hF, String jour, String terrain){
+    public static String testStage(String hD, String hF, String jour, String terrain, String idCommune){
         return "Select idStage from Stage where HeureDebut = '" + hD 
                 + "' and heureFin = '" + hF 
                 + "' and Jour = '" + jour 
-                + "' and NomTerrain = '" + terrain + "'";
+                + "' and NomTerrain = '" + terrain + "' AND IDCOMMUNE = "+idCommune+"" ;
     }
     
     public static String testOccupationTerrain(String jour, String hD, String hF){
@@ -168,11 +181,12 @@ public class InterfaceRequete {
     {
         String debut = jour + ":" + heureDebut;
         String fin = jour + ":" + heureFin;
-        return "(SELECT DISTINCT m.NOM, m.PRENOM FROM MONITEUR m, HABILITE h "
-                + "WHERE m.IDMONITEUR = h.IDMONITEUR AND h.NOMSPORT = '" + sport + "') " 
+        return "(SELECT DISTINCT p.NOM, p.PRENOM FROM PERSONNE p, MONITEUR m, HABILITE h "
+                + "WHERE m.IDMONITEUR = h.IDMONITEUR AND h.NOMSPORT = '" + sport + "' "
+                + "AND p.IDPERSONNE = m.IDMONITEUR ) " 
                 + "MINUS "
-                + "(SELECT DISTINCT m.NOM, m.PRENOM FROM MONITEUR m, STAGE s, HABILITE h "
-                + "WHERE m.IDMONITEUR = s.IDMONITEUR AND s.IDMONITEUR = h.IDMONITEUR "
+                + "(SELECT DISTINCT p.NOM, p.PRENOM FROM PERSONNE p, MONITEUR m, STAGE s, HABILITE h "
+                + "WHERE m.IDMONITEUR = s.IDMONITEUR AND p.IDPERSONNE = m.IDMONITEUR AND s.IDMONITEUR = h.IDMONITEUR "
                 + "AND NOT " 
                 + "(TO_CHAR(s.HEUREDEBUT,'dd/mm/yyyy:hh24:mi') >= '" + fin + 
                 "'  OR TO_CHAR(s.HEUREFIN,'dd/mm/yyyy:hh24:mi') <=  '" + debut + "' ))";
@@ -182,14 +196,7 @@ public class InterfaceRequete {
     {
         return "INSERT INTO ENCADRE VALUES(" + idStage + ", " + idMoniteur + ")";
     }
-    
-    public String ajouterStage(String idStage, String heureDebut, String heureFin, String nomSport,
-            String nomTerrain, String idCommune, String idMoniteur, String jour)
-    {
-        return "INSERT INTO STAGE VALUES(" + idStage + ", TO_DATE('" + jour +":"+ heureDebut + "', 'dd/mm/yyyy:hh24:mi'), "
-                + "TO_DATE('" + jour +":"+ heureFin + "', 'dd/mm/yyyy:hh24:mi'), '"
-                + nomSport + "' , '" + nomTerrain + "' , " + idCommune + " ," + idMoniteur + ")";
-    }
+
     
     public String ajouterHabilitation(String nomSport, String idMoniteur) {
         return "INSERT INTO HABILITE VALUES('" + nomSport + "', " + idMoniteur + ")";
