@@ -163,9 +163,9 @@ public class InterfaceRequete {
     public String printMembresDisponibles(String heureDebut, String heureFin, String jour) {
         String debut = "TO_DATE('" + jour + " " + heureDebut + "', 'dd/mm/yyyy hh24:mi')";
         String fin = "TO_DATE('" + jour + " " + heureFin + "', 'dd/mm/yyyy hh24:mi')";
-        return "(SELECT DISTINCT p.NOM, p.PRENOM FROM MEMBRE m, PERSONNE p WHERE p.IDPERSONNE = m.IDMEMBRE) " 
+        return "(SELECT DISTINCT p.NOM, p.PRENOM, IDPERSONNE FROM MEMBRE m, PERSONNE p WHERE p.IDPERSONNE = m.IDMEMBRE) " 
                 + "MINUS "
-                + "(SELECT DISTINCT pers.NOM, pers.PRENOM FROM MEMBRE m, STAGE s, PARTICIPE p, PERSONNE pers "
+                + "(SELECT DISTINCT pers.NOM, pers.PRENOM, IDPERSONNE FROM MEMBRE m, STAGE s, PARTICIPE p, PERSONNE pers "
                 + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE AND pers.IDPERSONNE = m.IDMEMBRE "
                 + "AND (" 
                 + "(" + debut + " < " + "s.HEUREDEBUT" +  " AND " + "s.HEUREDEBUT" + " < " + fin + ")"
@@ -181,11 +181,11 @@ public class InterfaceRequete {
     {
         String debut = jour + ":" + heureDebut;
         String fin = jour + ":" + heureFin;
-        return "(SELECT DISTINCT p.NOM, p.PRENOM FROM PERSONNE p, MONITEUR m, HABILITE h "
+        return "(SELECT DISTINCT p.NOM, p.PRENOM, IDPERSONNE FROM PERSONNE p, MONITEUR m, HABILITE h "
                 + "WHERE m.IDMONITEUR = h.IDMONITEUR AND h.NOMSPORT = '" + sport + "' "
                 + "AND p.IDPERSONNE = m.IDMONITEUR ) " 
                 + "MINUS "
-                + "(SELECT DISTINCT p.NOM, p.PRENOM FROM PERSONNE p, MONITEUR m, STAGE s, HABILITE h "
+                + "(SELECT DISTINCT p.NOM, p.PRENOM, IDPERSONNE FROM PERSONNE p, MONITEUR m, STAGE s, HABILITE h "
                 + "WHERE m.IDMONITEUR = s.IDMONITEUR AND p.IDPERSONNE = m.IDMONITEUR AND s.IDMONITEUR = h.IDMONITEUR "
                 + "AND NOT " 
                 + "(TO_CHAR(s.HEUREDEBUT,'dd/mm/yyyy:hh24:mi') >= '" + fin + 
@@ -207,9 +207,26 @@ public class InterfaceRequete {
     }
     
     public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
-        return "SELECT IDMONITEUR FROM MONITEUR WHERE NOM = '" + nom + "' AND PRENOM = '" + prenom + "' AND EMAIL = '" + email + "' AND " +
-                "TELEPHONE = '" + telephone + "' AND NUM = " + numero + " AND RUE = '" + rue + "' AND IDCOMMUNE = " + codePostal;
+        return "SELECT IDMONITEUR FROM MONITEUR m, PERSONNE p WHERE p.NOM = '" + nom + "' AND p.PRENOM = '" + prenom + "' AND p.EMAIL = '" + email + "' AND " +
+                "p.TELEPHONE = '" + telephone + "' AND p.NUM = " + numero + " AND p.RUE = '" + rue + "' AND p.IDCOMMUNE = " + codePostal + "AND m.IDMONITEUR = p.IDPERSONNE";
     }
+
+    
+    public String ajoutStagiaire(String prix, String idMembre, String idStage)
+    {
+        return "INSERT INTO PARTICIPE VALUES(GETDATE(), " + prix + ", " + idMembre + ", " + idStage + " )";
+    }
+    
+    public String isLocal(String idMembre)
+    {
+        return "SELECT IDCOMMUNE FROM PERSONNE,MEMBRE WHERE IDMEMBRE = IDPERSONNE AND IDMEMBRE = " + idMembre;
+    }    
+    
+    public String getPrixSport(String sport)
+    {
+        return "SELECT TARIFBASE FROM SPORT WHERE NOMSPORT = '" + sport ;
+    }
+    
     /* Ajout moniteur */
     /* Ordre : Verif Personne, puis verif Moniteur, puis verif commune puis ajout*/
     public static void main(String[] args){

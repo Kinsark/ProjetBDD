@@ -71,10 +71,11 @@ public class RequetesGenerales {
     }
 
 
-     public void AjoutStage(String idMoniteur, String idCommune, String heureDebut, String heureFin, String jour, String sport, String terrain){
+     public String AjoutStage(String idMoniteur, String idCommune, String heureDebut, String heureFin, String jour, String sport, String terrain){
             if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour, idCommune)) == false){
                 act.transaction(ir.ajoutStage(heureDebut, heureFin, sport, terrain, idCommune, idMoniteur, jour));
             }
+            return act.requeteId(ir.testStage(heureDebut, heureFin, terrain, jour, idCommune));
      }
      
      public String GetCommuneFromTerrain(String nomTerrain)
@@ -138,7 +139,7 @@ public class RequetesGenerales {
      }
      
      public ArrayList<String> getMembresDisponibles(String heureDebut, String heureFin, String jour) {
-         return act.requeteSet(ir.printMembresDisponibles(heureDebut, heureFin, jour), 2);
+         return act.requeteSet(ir.printMembresDisponibles(heureDebut, heureFin, jour), 3);
      }
      
      public ArrayList<String> getMoniteursDispos(String heureDebut, String heureFin, String jour, String sport) {
@@ -160,6 +161,22 @@ public class RequetesGenerales {
      
      public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
          return act.requeteId(ir.getMoniteurId(nom, prenom, email, telephone, numero, rue, codePostal));
+     }
+     
+     public boolean isLocal(String idMembre, String idCommune)
+     {
+         String commune = act.requeteId(ir.isLocal(idMembre));
+         return commune.equals(idCommune);
+     }
+     
+     public void AjoutStagiaire(String sport, String idMembre, String idStage, String idCommune)
+     {
+         String prix = act.requeteId(ir.getPrixSport(sport));
+         boolean isLocal = isLocal(idMembre, idCommune);
+         if (isLocal)
+             act.transaction(ir.ajoutStagiaire(0.9*Integer.parseInt(prix)+"", idMembre, idStage));
+         else 
+             act.transaction(ir.ajoutStagiaire(prix, idMembre, idStage));
      }
      
 }
