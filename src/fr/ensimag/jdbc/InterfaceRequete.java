@@ -63,12 +63,12 @@ public class InterfaceRequete {
        return "SELECT NOM, PRENOM from PERSONNE,MONITEUR where IDPERSONNE = IDMONITEUR AND idPERSONNE = " + id ;
     }
     
-    public static String testStage(String hD, String hF, String jour, String terrain, String idCommune){
+    public static String testStage(String hD, String hF, String terrain, String jour, String idCommune){
         String debut = jour + " " + hD;
         String fin = jour + " " + hF;
-        return "Select idStage from Stage s where TO_CHAR(s.HEUREDEBUT,'dd/mm/yyyy hh24:mi') = '" + debut 
-                + "' and TO_CHAR(s.HEUREFIN,'dd/mm/yyyy hh24:mi') = '" + fin 
-                + "' and NomTerrain = '" + terrain + "' AND IDCOMMUNE = "+idCommune+"" ;
+        return "Select idStage from Stage s where s.HEUREDEBUT = TO_DATE('" + debut + "', 'dd/mm/yyyy hh24:mi')" 
+                + " and s.HEUREFIN = TO_DATE('" + fin + "', 'dd/mm/yyyy hh24:mi')"
+                + " and NomTerrain = '" + terrain + "' AND IDCOMMUNE = "+idCommune+"" ;
     }
     
     public static String testOccupationTerrain(String jour, String hD, String hF){
@@ -215,7 +215,7 @@ public class InterfaceRequete {
     
     public String ajoutStagiaire(String prix, String idMembre, String idStage)
     {
-        return "INSERT INTO PARTICIPE VALUES(GETDATE(), " + prix + ", " + idMembre + ", " + idStage + " )";
+        return "INSERT INTO PARTICIPE VALUES(SYSDATE, " + prix + ", " + idMembre + ", " + idStage + " )";
     }
     
     public String isLocal(String idMembre)
@@ -225,7 +225,7 @@ public class InterfaceRequete {
     
     public String getPrixSport(String sport)
     {
-        return "SELECT TARIFBASE FROM SPORT WHERE NOMSPORT = '" + sport ;
+        return "SELECT TARIFBASE FROM SPORT WHERE NOMSPORT = '" + sport + "'";
     }
     
     /* Ajout moniteur */
