@@ -172,7 +172,24 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         if (arg0.getSource() == this.boutonValider) {
             if (this.verifierFormulaire()) {
                 // TODO : mettre dans la BDD 
-                // à utiliser : TO_DATE('2017/04/06 14:00', 'yyyy/mm/dd hh24:mi')
+                String idCommune = re.GetCommuneFromTerrain(comboTerrain.getSelectedItem().toString());
+                Iterator itMoniteurs = dualSuperviseur.destinationIterator();
+                
+                String infosMoniteur = itMoniteurs.next().toString();
+                String[] infos = infosMoniteur.split(" ");
+                String idMoniteur = infos[2];
+                
+                re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
+                        comboSport.getSelectedItem().toString(), comboTerrain.getSelectedItem().toString());
+                
+                // ajout des encadrants
+                itMoniteurs = dualMoniteurs.destinationIterator();
+                while (itMoniteurs.hasNext()) {
+                    String[] inf = itMoniteurs.next().toString().split(" ");
+                    idMoniteur = inf[2];
+                    re.AjouterEncadrant(idCommune, idMoniteur);
+                } 
+                
                 jop.showMessageDialog(null, "Le stage a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -268,8 +285,8 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
         if (set != null) {
             int setSize = set.size();
-            for (int j = 0; j < setSize - 1; j += 2) {
-                dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j + 1)});
+            for (int j = 0; j < setSize - 1; j += 3) {
+                dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j + 1) + " " + set.get(j+2)});
             }
         }
 
