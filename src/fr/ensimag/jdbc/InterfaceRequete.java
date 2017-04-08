@@ -149,10 +149,10 @@ public class InterfaceRequete {
          return "SELECT COUNT(*) FROM PARTICIPE";
      }
      
-     public String printTerrainsParSport(String sport, String idCommune) {
+     public String printTerrainsParSport(String sport) {
         return "SELECT DISTINCT t.NOMTERRAIN "
                + "FROM TERRAIN t, POSSIBILITE_PRATIQUER p, SPORT s "
-                + "WHERE t.TYPETERRAIN = p.TYPETERRAIN AND " + idCommune + " = t.IDCOMMUNE "
+                + "WHERE t.TYPETERRAIN = p.TYPETERRAIN "
                 + "AND p.NOMSPORT = " + sport + " AND p.NOMSPORT = s.NOMSPORT";
     }
     

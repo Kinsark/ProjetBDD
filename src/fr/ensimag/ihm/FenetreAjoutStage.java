@@ -51,9 +51,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
     private JLabel labelJour = new JLabel("Jour (jj/mm/aaaa)");
     private JFormattedTextField ftfJour = new JFormattedTextField(this.FORMAT_JOUR);
-
-    protected JLabel labelCommune = new JLabel("Code postal");
-    protected JTextField tfCommune = new JTextField(10);
     
     private JLabel labelTerrain = new JLabel("Terrain");
     private JComboBox comboTerrain;
@@ -74,7 +71,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
     private JButton boutonSuperviseur = new JButton("Sélectionner le superviseur");
     private JButton boutonValider = new JButton("Valider");
     
-    private static final String REGEX_COMMUNE = "[0-9]{5}";
 
     public FenetreAjoutStage(Connection conn) {
         Border border = this.getBorder();
@@ -121,8 +117,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         this.comboSport = new JComboBox(re.getAllSports().toArray());
 
         // terrain
-        tfCommune.setText("00000");
-        this.comboTerrain = new JComboBox(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'', tfCommune.getText()).toArray());
+        this.comboTerrain = new JComboBox(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'').toArray());
 
         this.comboSport.addActionListener(this);
         this.boutonStagiaire.addActionListener(this);
@@ -136,7 +131,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         this.addLabelAndComponent(labelHeureDebut, ftfHeureDebut);
         this.addLabelAndComponent(labelHeureFin, ftfHeureFin);
         this.addLabelAndComponent(labelJour, ftfJour);
-        this.addLabelAndComponent(labelCommune, tfCommune);
         this.addLabelAndComponent(labelSport, comboSport);
         this.addLabelAndComponent(labelTerrain, comboTerrain);
         this.addLabelAndComponent(new JLabel("Sélectionner les stagiaires"), boutonStagiaire);
@@ -147,7 +141,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.comboSport) {
-            DefaultComboBoxModel model = new DefaultComboBoxModel(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'', tfCommune.getText()).toArray());
+            DefaultComboBoxModel model = new DefaultComboBoxModel(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'').toArray());
             comboTerrain.setModel(model);
         }
         if (arg0.getSource() == this.boutonStagiaire) {
@@ -242,10 +236,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         }
         if (dualSuperviseur.getSelectedNumber() != 1) {
             jop.showMessageDialog(null, "Il faut sélectionner un superviseur !", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (!this.tfCommune.getText().matches(this.REGEX_COMMUNE)) {
-            jop.showMessageDialog(null, "Code postal invalide !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (this.dualMoniteurs.getSelectedNumber() < (double)this.dualStagiaires.getSelectedNumber()/10) {
