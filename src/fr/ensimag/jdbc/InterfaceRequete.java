@@ -195,7 +195,7 @@ public class InterfaceRequete {
     
     public String moniteurEncadre(String idStage, String idMoniteur)
     {
-        return "INSERT INTO ENCADRE VALUES(" + idStage + ", " + idMoniteur + ")";
+        return "INSERT INTO ENCADRE VALUES(" + idMoniteur + ", " + idStage + ")";
     }
 
     

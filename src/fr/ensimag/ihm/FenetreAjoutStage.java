@@ -176,13 +176,13 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 
                 String idStage = re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
                         comboSport.getSelectedItem().toString(), comboTerrain.getSelectedItem().toString());
-                
+                System.out.println("id stage : " + idStage);
                 // ajout des encadrants
                 itMoniteurs = dualMoniteurs.destinationIterator();
                 while (itMoniteurs.hasNext()) {
                     String[] inf = itMoniteurs.next().toString().split(" ");
                     idMoniteur = inf[2];
-                    re.AjouterEncadrant(idCommune, idMoniteur);
+                    re.AjouterEncadrant(idStage, idMoniteur);
                 } 
                 
                 // ajout des participants
