@@ -70,7 +70,8 @@ public class FenetreAjoutMembre extends FenetreAjoutPersonne {
                 super.getJOP().showMessageDialog(null, "La date de naissance est mal saisie !", "Erreur", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }
