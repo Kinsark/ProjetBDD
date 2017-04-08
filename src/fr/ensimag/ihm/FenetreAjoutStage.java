@@ -51,7 +51,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
     private JLabel labelJour = new JLabel("Jour (jj/mm/aaaa)");
     private JFormattedTextField ftfJour = new JFormattedTextField(this.FORMAT_JOUR);
-    
+
     private JLabel labelTerrain = new JLabel("Terrain");
     private JComboBox comboTerrain;
 
@@ -70,7 +70,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
     private JButton boutonMoniteur = new JButton("Sélectionner les moniteurs");
     private JButton boutonSuperviseur = new JButton("Sélectionner le superviseur");
     private JButton boutonValider = new JButton("Valider");
-    
 
     public FenetreAjoutStage(Connection conn) {
         Border border = this.getBorder();
@@ -127,7 +126,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
         //this.initFrameStagiaires();
         //this.initFrameMoniteurs();
-
         this.addLabelAndComponent(labelHeureDebut, ftfHeureDebut);
         this.addLabelAndComponent(labelHeureFin, ftfHeureFin);
         this.addLabelAndComponent(labelJour, ftfJour);
@@ -145,16 +143,22 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
             comboTerrain.setModel(model);
         }
         if (arg0.getSource() == this.boutonStagiaire) {
-            this.initFrameStagiaires();
-            this.frameStagiaires.setVisible(true);
+            if ((ftfHeureFin.getText().equals("  :  ")) || (ftfHeureDebut.getText().equals("  :  "))
+                    || (ftfJour.getText().equals("  /  /    "))) {
+                jop.showMessageDialog(null, "Vous devez sélectionner un créneau !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } else {
+                this.initFrameStagiaires();
+                this.frameStagiaires.setVisible(true);
+            }
         }
         if (arg0.getSource() == this.boutonMoniteur) {
-            if ((ftfHeureFin.getText().equals("  :  ")) || (ftfHeureDebut.getText().equals("  :  ")) || 
-                (ftfJour.getText().equals("  /  /    ")))
+            if ((ftfHeureFin.getText().equals("  :  ")) || (ftfHeureDebut.getText().equals("  :  "))
+                    || (ftfJour.getText().equals("  /  /    "))) {
                 jop.showMessageDialog(null, "Vous devez sélectionner un créneau !", "Erreur", JOptionPane.ERROR_MESSAGE);
-            else
+            } else {
                 this.initFrameMoniteurs();
                 this.frameMoniteurs.setVisible(true);
+            }
         }
         if (arg0.getSource() == this.boutonSuperviseur) {
             if (this.dualMoniteurs.getSelectedNumber() == 0) {
@@ -169,22 +173,22 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 // TODO : mettre dans la BDD 
                 String idCommune = re.GetCommuneFromTerrain(comboTerrain.getSelectedItem().toString());
                 Iterator itMoniteurs = dualSuperviseur.destinationIterator();
-                
+
                 String infosMoniteur = itMoniteurs.next().toString();
                 String[] infos = infosMoniteur.split(" ");
                 String idMoniteur = infos[2];
-                
+
                 re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
                         comboSport.getSelectedItem().toString(), comboTerrain.getSelectedItem().toString());
-                
+
                 // ajout des encadrants
                 itMoniteurs = dualMoniteurs.destinationIterator();
                 while (itMoniteurs.hasNext()) {
                     String[] inf = itMoniteurs.next().toString().split(" ");
                     idMoniteur = inf[2];
                     re.AjouterEncadrant(idCommune, idMoniteur);
-                } 
-                
+                }
+
                 jop.showMessageDialog(null, "Le stage a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -238,7 +242,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
             jop.showMessageDialog(null, "Il faut sélectionner un superviseur !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (this.dualMoniteurs.getSelectedNumber() < (double)this.dualStagiaires.getSelectedNumber()/10) {
+        if (this.dualMoniteurs.getSelectedNumber() < (double) this.dualStagiaires.getSelectedNumber() / 10) {
             jop.showMessageDialog(null, "Il faut un moniteur pour 10 stagiaires !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -264,14 +268,14 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         dualMoniteurs.setDestinationChoicesTitle("Moniteurs sélectionnés");
         dualMoniteurs.clearDestinationListModel();
         dualMoniteurs.clearSourceListModel();
-        
-        set = re.getMoniteursDispos(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(), 
+
+        set = re.getMoniteursDispos(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
                 comboSport.getSelectedItem().toString());
 
         if (set != null) {
             int setSize = set.size();
             for (int j = 0; j < setSize - 1; j += 3) {
-                dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j + 1) + " " + set.get(j+2)});
+                dualMoniteurs.addSourceElements(new String[]{set.get(j) + " " + set.get(j + 1) + " " + set.get(j + 2)});
             }
         }
 

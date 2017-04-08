@@ -155,7 +155,7 @@ public class InterfaceRequete {
                 + "WHERE t.TYPETERRAIN = p.TYPETERRAIN "
                 + "AND p.NOMSPORT = " + sport + " AND p.NOMSPORT = s.NOMSPORT";
     }
-    
+         
     public String printSports() {
         return "SELECT NOMSPORT FROM SPORT";
     }
