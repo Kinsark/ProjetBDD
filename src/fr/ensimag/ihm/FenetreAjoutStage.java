@@ -53,7 +53,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
     private JFormattedTextField ftfJour = new JFormattedTextField(this.FORMAT_JOUR);
 
     private JLabel labelTerrain = new JLabel("Terrain");
-    private JComboBox comboTerrain;
+    private JComboBox comboTerrain = new JComboBox();
 
     private JLabel labelSport = new JLabel("Sport");
     private JComboBox comboSport;
@@ -116,7 +116,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         this.comboSport = new JComboBox(re.getAllSports().toArray());
 
         // terrain
-        this.comboTerrain = new JComboBox(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'').toArray());
+        this.updateComboTerrain();
 
         this.comboSport.addActionListener(this);
         this.boutonStagiaire.addActionListener(this);
@@ -139,8 +139,8 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == this.comboSport) {
-            DefaultComboBoxModel model = new DefaultComboBoxModel(re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'').toArray());
-            comboTerrain.setModel(model);
+            this.updateComboTerrain();
+            this.initFrameMoniteurs();
         }
         if (arg0.getSource() == this.boutonStagiaire) {
             if ((ftfHeureFin.getText().equals("  :  ")) || (ftfHeureDebut.getText().equals("  :  "))
@@ -170,8 +170,9 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         }
         if (arg0.getSource() == this.boutonValider) {
             if (this.verifierFormulaire()) {
-                // TODO : mettre dans la BDD 
-                String idCommune = re.GetCommuneFromTerrain(comboTerrain.getSelectedItem().toString());
+                String terrain = this.comboTerrain.getSelectedItem().toString();
+                String nomTerrain = terrain.substring(0, terrain.length()-8);
+                String idCommune = re.GetCommuneFromTerrain(nomTerrain);
                 Iterator itMoniteurs = dualSuperviseur.destinationIterator();
 
                 String infosMoniteur = itMoniteurs.next().toString();
@@ -180,9 +181,12 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 
                 String idStage = re.AjoutStage(idMoniteur, idCommune, ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(),
 
-                        comboSport.getSelectedItem().toString(), comboTerrain.getSelectedItem().toString());
+                        comboSport.getSelectedItem().toString(), nomTerrain);
 
-                System.out.println("id stage : " + idStage);
+                if (idStage == null) {
+                    jop.showMessageDialog(null, "Une erreur a été rencontrée !", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 // ajout des encadrants
                 itMoniteurs = dualMoniteurs.destinationIterator();
@@ -213,6 +217,11 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         int heureDebutH = 0, heureDebutM = 0, heureFinH = 0, heureFinM = 0;
         String[] date = this.ftfJour.getText().split("/");
         int jour = 0, mois = 0, annee = 0;
+        String terrain = this.comboTerrain.getSelectedItem().toString();
+        String nomTerrain = terrain.substring(0, terrain.length()-8);
+        String commune = terrain.substring(terrain.length()-6,terrain.length()-1);
+        ArrayList<String> caractTerrain = re.getCaractTerrain(nomTerrain, commune);
+        this.terrainCompatibleHoraires(0,0,0,0, caractTerrain);
         try {
             heureDebutH = Integer.parseInt(heureDebut[0]);
             heureDebutM = Integer.parseInt(heureDebut[1]);
@@ -239,8 +248,6 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
             jop.showMessageDialog(null, "Le jour est mal saisi !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        // TODO : faire le test avec les horaires du stade
-        // utiliser this.comboSport.getSelectedItem().toString()
         if (dualStagiaires.getSelectedNumber() == 0) {
             jop.showMessageDialog(null, "Vous n'avez pas sélectionné de stagiaire !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -255,6 +262,14 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         }
         if (this.dualMoniteurs.getSelectedNumber() < (double) this.dualStagiaires.getSelectedNumber() / 10) {
             jop.showMessageDialog(null, "Il faut un moniteur pour 10 stagiaires !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (Integer.parseInt(caractTerrain.get(2)) < this.dualStagiaires.getSelectedNumber()) {
+            jop.showMessageDialog(null, "La capacité du terrain selectionné est insuffisante !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!this.terrainCompatibleHoraires(heureDebutH, heureDebutM, heureFinH, heureFinM, caractTerrain)) {
+            jop.showMessageDialog(null, "Le créneau n'est pas compatible avec le terrain selectionné !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -303,6 +318,8 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
 
     private void initFrameSuperviseur() {
         Iterator itMoniteurs = dualMoniteurs.destinationIterator();
+        dualSuperviseur.clearSourceListModel();
+        dualSuperviseur.clearDestinationListModel();
         while (itMoniteurs.hasNext()) {
             dualSuperviseur.addSourceElements(new Object[]{itMoniteurs.next()});
         }
@@ -330,5 +347,38 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         this.add(comp, gridBagConstraintForTextField);
 
         this.yPos++;
+    }
+    
+    private void updateComboTerrain() {
+        ArrayList<String> listSports = re.getTerrainsParSport('\'' + comboSport.getSelectedItem().toString() + '\'');
+        ArrayList<String> sports = new ArrayList<String>();
+        for (int i = 0, size = listSports.size(); i < size; i += 2) {
+            sports.add(new String(listSports.get(i) + " (" + listSports.get(i+1) + ")"));
+        }
+        DefaultComboBoxModel model = new DefaultComboBoxModel(sports.toArray());
+        this.comboTerrain.setModel(model);
+    }
+    
+    private boolean terrainCompatibleHoraires(int stageDebutH, int stageDebutM, int stageFinH, int stageFinM, ArrayList<String> caractTerrain) {
+        String heureOuverture = caractTerrain.get(0).split(" ")[1];
+        String heureFermeture = caractTerrain.get(1).split(" ")[1];
+        int hoH = Integer.parseInt(heureOuverture.split(":")[0]);
+        int hoM = Integer.parseInt(heureOuverture.split(":")[1]);
+        int hfH = Integer.parseInt(heureFermeture.split(":")[0]);
+        int hfM = Integer.parseInt(heureFermeture.split(":")[1]);
+        if ((stageDebutH < hoH) || (stageFinH > hfH)) {
+            return false;
+        }
+        if (stageDebutH == hoH) {
+            if (stageDebutM < hoM) {
+                return false;
+            }
+        }
+        if (stageFinH == hfH) {
+            if (stageFinM > hfM) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -130,7 +130,7 @@ public class RequetesGenerales {
      }
      
      public ArrayList<String> getTerrainsParSport(String sport) {
-         return act.requeteSet(ir.printTerrainsParSport(sport),1);
+         return act.requeteSet(ir.printTerrainsParSport(sport),2);
      }
      
      public ArrayList<String> getAllSports() {
@@ -178,4 +178,7 @@ public class RequetesGenerales {
              act.transaction(ir.ajoutStagiaire(prix, idMembre, idStage));
      }
      
+     public ArrayList<String> getCaractTerrain(String nomTerrain, String idCommune) {
+         return act.requeteSet(ir.getCaractTerrain(nomTerrain, idCommune),3);
+     }
 }

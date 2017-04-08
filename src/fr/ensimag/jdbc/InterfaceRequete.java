@@ -151,7 +151,7 @@ public class InterfaceRequete {
      }
      
      public String printTerrainsParSport(String sport) {
-        return "SELECT DISTINCT t.NOMTERRAIN "
+        return "SELECT DISTINCT t.NOMTERRAIN, t.IDCOMMUNE "
                + "FROM TERRAIN t, POSSIBILITE_PRATIQUER p, SPORT s "
                 + "WHERE t.TYPETERRAIN = p.TYPETERRAIN "
                 + "AND p.NOMSPORT = " + sport + " AND p.NOMSPORT = s.NOMSPORT";
@@ -226,6 +226,10 @@ public class InterfaceRequete {
     public String getPrixSport(String sport)
     {
         return "SELECT TARIFBASE FROM SPORT WHERE NOMSPORT = '" + sport + "'";
+    }
+    
+    public String getCaractTerrain(String nomTerrain, String commune) {
+        return "SELECT HEUREOUVERTURE, HEUREFERMETURE, CAPACITE FROM TERRAIN WHERE NOMTERRAIN = '" + nomTerrain + "' AND IDCOMMUNE = " + commune;
     }
     
     /* Ajout moniteur */
