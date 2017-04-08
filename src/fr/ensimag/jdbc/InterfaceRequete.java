@@ -64,9 +64,10 @@ public class InterfaceRequete {
     }
     
     public static String testStage(String hD, String hF, String jour, String terrain, String idCommune){
-        return "Select idStage from Stage where HeureDebut = '" + hD 
-                + "' and heureFin = '" + hF 
-                + "' and Jour = '" + jour 
+        String debut = jour + " " + hD;
+        String fin = jour + " " + hF;
+        return "Select idStage from Stage s where TO_CHAR(s.HEUREDEBUT,'dd/mm/yyyy hh24:mi') = '" + debut 
+                + "' and TO_CHAR(s.HEUREFIN,'dd/mm/yyyy hh24:mi') = '" + fin 
                 + "' and NomTerrain = '" + terrain + "' AND IDCOMMUNE = "+idCommune+"" ;
     }
     
