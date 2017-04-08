@@ -35,10 +35,10 @@ public class RequetesGenerales {
 
             act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
             idS = act.requeteId(ir.testPersonne(nom, prenom, email, telephone));
-            act.transaction(ir.ajoutMoniteur(nom, prenom, email, telephone, numero, rue, codePostal, idS));
+            act.transaction(ir.ajoutMoniteur(idS));
         } else {
             if (act.requete(ir.testMoniteur(idS)) == false) {
-                act.transaction(ir.ajoutMoniteur(nom, prenom, email, telephone, numero, rue, codePostal, idS));
+                act.transaction(ir.ajoutMoniteur(idS));
             }
 
         }
@@ -58,10 +58,10 @@ public class RequetesGenerales {
 
             act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
             idS = act.requeteId(ir.testPersonne(nom, prenom, email, telephone));
-            act.transaction(ir.ajoutMembre(nom, prenom, email, telephone, numero, rue, codePostal, idS, dateN));
+            act.transaction(ir.ajoutMembre(idS, dateN));
         } else {
             if (act.requete(ir.testMembre(idS)) == false) {
-                act.transaction(ir.ajoutMembre(nom, prenom, email, telephone, numero, rue, codePostal, idS, dateN));
+                act.transaction(ir.ajoutMembre(idS, dateN));
             }
 
         }

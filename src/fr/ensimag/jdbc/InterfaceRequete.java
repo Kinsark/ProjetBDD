@@ -6,14 +6,13 @@ public class InterfaceRequete {
     private int idCompt=0;
     
     
-    public static String ajoutMoniteur(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMoniteur){
-        return "INSERT INTO MONITEUR VALUES('" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMoniteur + ")";
+    public static String ajoutMoniteur(String idMoniteur){
+        return "INSERT INTO MONITEUR(IDMONITEUR) VALUES('" + idMoniteur + "')";
     }
     
-    public static String ajoutMembre(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal,String idMembre, String dateN){
-        return "INSERT INTO MEMBRE VALUES('" + nom + "', '" + prenom + "', '" + email
-                + "', '" + telephone + "', " + numero + ", '" + rue + "'," + codePostal + "," + idMembre + ",TO_DATE('" + dateN + "','dd/mm/yyyy'))";
+    public static String ajoutMembre(String idMembre, String dateN){
+        return "INSERT INTO MEMBRE(IDMEMBRE, DATENAISSANCE)  VALUES('" + idMembre 
+                + "',TO_DATE('" + dateN + "','dd/mm/yyyy'))";
     }
     
     public static String ajoutPersonne(String nom, String prenom, String email
