@@ -150,10 +150,10 @@ public class InterfaceRequete {
     public String printMembresDisponibles(String heureDebut, String heureFin, String jour) {
         String debut = "TO_DATE('" + jour + " " + heureDebut + "', 'dd/mm/yyyy hh24:mi')";
         String fin = "TO_DATE('" + jour + " " + heureFin + "', 'dd/mm/yyyy hh24:mi')";
-        return "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m) " 
+        return "(SELECT DISTINCT p.NOM, p.PRENOM FROM MEMBRE m, PERSONNE p WHERE p.IDPERSONNE = m.IDMEMBRE) " 
                 + "MINUS "
-                + "(SELECT DISTINCT m.NOM, m.PRENOM FROM MEMBRE m, STAGE s, PARTICIPE p "
-                + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE "
+                + "(SELECT DISTINCT pers.NOM, pers.PRENOM FROM MEMBRE m, STAGE s, PARTICIPE p, PERSONNE pers "
+                + "WHERE m.IDMEMBRE = p.IDMEMBRE AND p.IDSTAGE = s.IDSTAGE AND pers.IDPERSONNE = m.IDMEMBRE "
                 + "AND (" 
                 + "(" + debut + " < " + "s.HEUREDEBUT" +  " AND " + "s.HEUREDEBUT" + " < " + fin + ")"
                 + " OR "

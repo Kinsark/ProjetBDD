@@ -131,7 +131,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         this.boutonSuperviseur.addActionListener(this);
 
         //this.initFrameStagiaires();
-        this.initFrameMoniteurs();
+        //this.initFrameMoniteurs();
 
         this.addLabelAndComponent(labelHeureDebut, ftfHeureDebut);
         this.addLabelAndComponent(labelHeureFin, ftfHeureFin);
@@ -159,6 +159,7 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
                 (ftfJour.getText().equals("  /  /    ")))
                 jop.showMessageDialog(null, "Vous devez sélectionner un créneau !", "Erreur", JOptionPane.ERROR_MESSAGE);
             else
+                this.initFrameMoniteurs();
                 this.frameMoniteurs.setVisible(true);
         }
         if (arg0.getSource() == this.boutonSuperviseur) {
@@ -230,22 +231,17 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
             jop.showMessageDialog(null, "Code postal invalide !", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        if (this.dualMoniteurs.getSelectedNumber() < (double)this.dualStagiaires.getSelectedNumber()/10) {
+            jop.showMessageDialog(null, "Il faut un moniteur pour 10 stagiaires !", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         return true;
     }
 
     private void initFrameStagiaires() {
-        // TODO : trouver tous les stagiaires qui ne participent pas au stage
-//        dualStagiaires.addSourceElements(new String[]{"One", "Two", "Three"});
-//        dualStagiaires.addSourceElements(new String[]{"Four", "Five", "Six"});
-//        dualStagiaires.addSourceElements(new String[]{"Seven", "Eight", "Nine"});
-//        dualStagiaires.addSourceElements(new String[]{"Ten", "Eleven", "Twelve"});
-//        dualStagiaires.addSourceElements(new String[]{"Thirteen", "Fourteen",
-//            "Fifteen"});
-//        dualStagiaires.addSourceElements(new String[]{"Sixteen", "Seventeen",
-//            "Eighteen"});
-//        dualStagiaires.addSourceElements(new String[]{"Nineteen", "Twenty", "Thirty"});
         ArrayList<String> set = re.getMembresDisponibles(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText());
         dualStagiaires.clearSourceListModel();
+        dualStagiaires.clearDestinationListModel();
         for (int i = 0, size = set.size(); i < size; i += 2) {
             dualStagiaires.addSourceElements(new String[]{set.get(i) + " " + set.get(i + 1)});
         }
@@ -259,10 +255,9 @@ public class FenetreAjoutStage extends JPanel implements ActionListener {
         ArrayList<String> set = new ArrayList<>();
         dualMoniteurs.setSourceChoicesTitle("Liste des moniteurs");
         dualMoniteurs.setDestinationChoicesTitle("Moniteurs sélectionnés");
-        // TODO : parmi les moniteurs, verifier ceux qui peuvent encadrer ce stage
+        dualMoniteurs.clearDestinationListModel();
+        dualMoniteurs.clearSourceListModel();
         
-        
-
         set = re.getMoniteursDispos(ftfHeureDebut.getText(), ftfHeureFin.getText(), ftfJour.getText(), 
                 comboSport.getSelectedItem().toString());
 
