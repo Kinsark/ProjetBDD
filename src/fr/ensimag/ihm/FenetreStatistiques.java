@@ -77,7 +77,6 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             JFrame f = new JFrame("Terrains les plus utilisés");
 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
             int height = screenSize.height * 1/2;
             int width = screenSize.width * 1/4;
             f.setPreferredSize(new Dimension(width, height));
@@ -152,7 +151,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             RequetesGenerales reqG = new RequetesGenerales(conn);
             
             String recettes = reqG.recettes();
-            LabelSqlRecettes.setText(recettes);
+            LabelSqlRecettes.setText(recettes + " €");
             
             String nbStagiaires = reqG.NbStagiaires();
             LabelSqlStagiaires.setText(nbStagiaires);
