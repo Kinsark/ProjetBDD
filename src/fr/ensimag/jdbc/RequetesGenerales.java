@@ -71,10 +71,15 @@ public class RequetesGenerales {
     }
 
 
-     public void AjoutStage(String heureDebut, String heureFin, String jour, String sport, String terrain){
-            if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour)) == false){
-                
+     public void AjoutStage(String idMoniteur, String idCommune, String heureDebut, String heureFin, String jour, String sport, String terrain){
+            if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour, idCommune)) == false){
+                act.transaction(ir.ajoutStage(heureDebut, heureFin, sport, terrain, idCommune, idMoniteur, jour));
             }
+     }
+     
+     public String GetCommuneFromTerrain(String nomTerrain)
+     {
+         return act.requeteId(ir.getCommuneFromTerrain(nomTerrain));
      }
 
      public ArrayList<String> SeekMoniteurs()
@@ -137,7 +142,12 @@ public class RequetesGenerales {
      }
      
      public ArrayList<String> getMoniteursDispos(String heureDebut, String heureFin, String jour, String sport) {
-         return act.requeteSet(ir.printMoniteursDispos(heureDebut, heureFin, jour, sport), 2);
+         return act.requeteSet(ir.printMoniteursDispos(heureDebut, heureFin, jour, sport), 3);
      }
      
+    public void AjouterEncadrant(String idStage, String idMoniteur)
+    {
+        act.transaction(ir.moniteurEncadre(idStage, idMoniteur));
+    }
+   
 }
