@@ -207,8 +207,8 @@ public class InterfaceRequete {
     }
     
     public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
-        return "SELECT IDMONITEUR FROM MONITEUR WHERE NOM = '" + nom + "' AND PRENOM = '" + prenom + "' AND EMAIL = '" + email + "' AND " +
-                "TELEPHONE = '" + telephone + "' AND NUM = " + numero + " AND RUE = '" + rue + "' AND IDCOMMUNE = " + codePostal;
+        return "SELECT IDMONITEUR FROM MONITEUR m, PERSONNE p WHERE p.NOM = '" + nom + "' AND p.PRENOM = '" + prenom + "' AND p.EMAIL = '" + email + "' AND " +
+                "p.TELEPHONE = '" + telephone + "' AND p.NUM = " + numero + " AND p.RUE = '" + rue + "' AND p.IDCOMMUNE = " + codePostal + "AND m.IDMONITEUR = p.IDPERSONNE";
     }
 
     
