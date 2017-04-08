@@ -131,7 +131,7 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
                     System.out.println("coucou");
                     ArrayList<String> temp = reqG.getMoniteur(id);
                     System.out.println(temp.get(0) + temp.get(1));
-                    data[i] = temp.get(0)+ " " + temp.get(1) + " : " + Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
+                    data[i] = temp.get(0)+ " " + temp.get(1) + " : " + (double)Integer.parseInt(supervisions.get(id))/Integer.parseInt(encadrements.get(id));
                     
                 }
                 i++;
