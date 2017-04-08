@@ -156,9 +156,10 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             
             String nbStages = reqG.NbStages();
             String nbInsc = reqG.NbInscriptions();
-            int nbMoy=0;
-            if (Integer.parseInt(nbStages) != 0)
-             nbMoy = Integer.parseInt(nbInsc)/Integer.parseInt(nbStages);
+            double nbMoy=0;
+            if (Integer.parseInt(nbStages) != 0) {
+                nbMoy = (double) Integer.parseInt(nbInsc)/Integer.parseInt(nbStages);
+            }
             LabelSqlNbMoyenInsc.setText(nbMoy+"");
         }
         
