@@ -47,12 +47,12 @@ public class InterfaceRequete {
     
     public static String printMoniteur()
     {
-        return "SELECT NOM,PRENOM FROM MONITEUR";
+        return "SELECT NOM,PRENOM FROM MONITEUR, PERSONNE WHERE IDMONITEUR = IDPERSONNE";
     }
     
     public static String printMembre()
     {
-        return "SELECT NOM,PRENOM,DATENAISSANCE FROM MEMBRE";
+        return "SELECT NOM,PRENOM,DATENAISSANCE FROM MEMBRE, PERSONNE WHERE IDMEMBRE = IDPERSONNE";
     }
     
     public static String testPersonne(String nom, String prenom, String email, String telephone){
@@ -60,7 +60,7 @@ public class InterfaceRequete {
     }
     
     public static String testMoniteur(String id){
-       return "SELECT NOM, PRENOM from Moniteur where idMoniteur = " + id ;
+       return "SELECT NOM, PRENOM from PERSONNE,MONITEUR where IDPERSONNE = IDMONITEUR AND idPERSONNE = " + id ;
     }
     
     public static String testStage(String hD, String hF, String jour, String terrain, String idCommune){
@@ -89,7 +89,7 @@ public class InterfaceRequete {
     
     public static String seekMoniteurs()
     {
-        return "SELECT PRENOM,NOM FROM MONITEUR";
+        return "SELECT PRENOM,NOM FROM MONITEUR, PERSONNE WHERE IDPERSONNE = IDMONITEUR";
     }
     
     public String countTerrains() {
