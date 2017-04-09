@@ -128,7 +128,6 @@ public class FenetreStatistiques extends JPanel implements ActionListener {
             {
                 if (encadrements.containsKey(id))
                 {
-                    System.out.println("coucou");
                     ArrayList<String> temp = reqG.getMoniteur(id);
                     System.out.println(temp.get(0) + temp.get(1));
                     DecimalFormat df = new DecimalFormat("#.00");
