@@ -4,9 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Action {
     static Connection conn;
+    int count = 1;
 
     public Action(Connection conn) {
         this.conn = conn;
@@ -139,13 +142,14 @@ public class Action {
     return set;
     }
     
-    public void transaction(String requete){
+    public void transaction(String requete) throws SQLException{
+        count ++;
+        Savepoint save = conn.setSavepoint();
+        
         try {
-            // Demarrage de la transaction (implicite dans notre cas)
-          conn.setAutoCommit(false);
-          conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
-
+            
           // Execution des requetes
+         // conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
           PreparedStatement pstmt = conn.prepareStatement
             (requete);
 
@@ -160,6 +164,7 @@ public class Action {
           //conn.close();
         }
         catch (SQLException e) {
+          conn.rollback(save);
           System.err.println("failed !");
           e.printStackTrace();
         }

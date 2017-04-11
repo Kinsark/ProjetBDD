@@ -113,12 +113,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
 	    System.out.print("Connecting to the database... "); 
 	    connec = DriverManager.getConnection(CONN_URL, USER, PASSWD);
             System.out.println("connected");
+            connec.setAutoCommit(false);
+            connec.setTransactionIsolation(connec.TRANSACTION_SERIALIZABLE);
             
         } catch (SQLException e) {
             System.err.println("failed");
             e.printStackTrace(System.err);
         }
-        
+
+
         FenetrePrincipale fp = new FenetrePrincipale(connec);
         
         // on ferme la connexion quand l'user quitte l'application

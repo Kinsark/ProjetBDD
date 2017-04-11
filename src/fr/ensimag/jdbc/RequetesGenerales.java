@@ -6,8 +6,11 @@
 package fr.ensimag.jdbc;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,15 +33,31 @@ public class RequetesGenerales {
         if (idS == null) {
 
             if (act.requete(ir.testCommune(codePostal)) == false) {
-                act.transaction(ir.ajoutCommune(codePostal));
+                try {
+                    act.transaction(ir.ajoutCommune(codePostal));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
-            act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
+            try {
+                act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
+            } catch (SQLException ex) {
+                Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+            }
             idS = act.requeteId(ir.testPersonne(nom, prenom, email, telephone));
-            act.transaction(ir.ajoutMoniteur(idS));
+            try {
+                act.transaction(ir.ajoutMoniteur(idS));
+            } catch (SQLException ex) {
+                Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             if (act.requete(ir.testMoniteur(idS)) == false) {
-                act.transaction(ir.ajoutMoniteur(idS));
+                try {
+                    act.transaction(ir.ajoutMoniteur(idS));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }
@@ -53,15 +72,31 @@ public class RequetesGenerales {
         if (idS == null) {
 
             if (act.requete(ir.testCommune(codePostal)) == false) {
-                act.transaction(ir.ajoutCommune(codePostal));
+                try {
+                    act.transaction(ir.ajoutCommune(codePostal));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
-            act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
+            try {
+                act.transaction(ir.ajoutPersonne(nom, prenom, email, telephone, numero, rue, codePostal));
+            } catch (SQLException ex) {
+                Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+            }
             idS = act.requeteId(ir.testPersonne(nom, prenom, email, telephone));
-            act.transaction(ir.ajoutMembre(idS, dateN));
+            try {
+                act.transaction(ir.ajoutMembre(idS, dateN));
+            } catch (SQLException ex) {
+                Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             if (act.requete(ir.testMembre(idS)) == false) {
-                act.transaction(ir.ajoutMembre(idS, dateN));
+                try {
+                    act.transaction(ir.ajoutMembre(idS, dateN));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }
@@ -73,7 +108,11 @@ public class RequetesGenerales {
 
      public String AjoutStage(String idMoniteur, String idCommune, String heureDebut, String heureFin, String jour, String sport, String terrain){
             if (act.requete(ir.testStage(heureDebut, heureFin, terrain, jour, idCommune)) == false){
-                act.transaction(ir.ajoutStage(heureDebut, heureFin, sport, terrain, idCommune, idMoniteur, jour));
+                try {
+                    act.transaction(ir.ajoutStage(heureDebut, heureFin, sport, terrain, idCommune, idMoniteur, jour));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             return act.requeteId(ir.testStage(heureDebut, heureFin, terrain, jour, idCommune));
      }
@@ -147,15 +186,27 @@ public class RequetesGenerales {
 
     public void AjouterEncadrant(String idStage, String idMoniteur)
     {
-        act.transaction(ir.moniteurEncadre(idStage, idMoniteur));
+        try {
+            act.transaction(ir.moniteurEncadre(idStage, idMoniteur));
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
      public void ajoutHabilitation(String nomSport, String idMoniteur) {
-         act.transaction(ir.ajouterHabilitation(nomSport, idMoniteur));
+        try {
+            act.transaction(ir.ajouterHabilitation(nomSport, idMoniteur));
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+        }
      }
      
      public void ajoutExpertise(String nomSport, String idMoniteur) {
-         act.transaction(ir.ajouterExpertise(nomSport, idMoniteur));
+        try {
+            act.transaction(ir.ajouterExpertise(nomSport, idMoniteur));
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+        }
      }
      
      public String getMoniteurId(String nom, String prenom, String email, String telephone, String numero, String rue, String codePostal) {
@@ -173,9 +224,17 @@ public class RequetesGenerales {
          String prix = act.requeteId(ir.getPrixSport(sport));
          boolean isLocal = isLocal(idMembre, idCommune);
          if (isLocal)
-             act.transaction(ir.ajoutStagiaire(0.9*Integer.parseInt(prix)+"", idMembre, idStage));
+             try {
+                 act.transaction(ir.ajoutStagiaire(0.9*Integer.parseInt(prix)+"", idMembre, idStage));
+         } catch (SQLException ex) {
+             Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+         }
          else 
-             act.transaction(ir.ajoutStagiaire(prix, idMembre, idStage));
+             try {
+                 act.transaction(ir.ajoutStagiaire(prix, idMembre, idStage));
+         } catch (SQLException ex) {
+             Logger.getLogger(RequetesGenerales.class.getName()).log(Level.SEVERE, null, ex);
+         }
      }
      
      public ArrayList<String> getCaractTerrain(String nomTerrain, String idCommune) {
